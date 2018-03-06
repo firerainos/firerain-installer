@@ -4,6 +4,7 @@ import (
 	"text/template"
 	"os"
 	"os/exec"
+	"fmt"
 )
 
 type Bootctl struct {
@@ -17,8 +18,9 @@ func NewBootctl(bootPath,rootDevice string) *Bootctl {
 
 func (b *Bootctl) Install() error {
 	cmd := exec.Command("bootctl","--path="+b.bootPath,"install")
-	_,err := cmd.CombinedOutput()
+	out,err := cmd.CombinedOutput()
 	if err != nil {
+		fmt.Println(string(out))
 		return err
 	}
 	return nil
@@ -35,16 +37,20 @@ func (b *Bootctl) Deploy() error {
 		return err
 	}
 
-	b.CreateEntries("firerain.conf",partuuid,false)
-	b.CreateEntries("firerain-fallback.conf",partuuid,true)
+	err = b.CreateEntries("firerain.conf",partuuid,false)
+	if err != nil {
+		return err
+	}
+	err = b.CreateEntries("firerain-fallback.conf",partuuid,true)
+	if err != nil {
+		return err
+	}
 
-	b.SetDefaultEntries("firerain")
-
-	return nil
+	return b.SetDefaultEntries("firerain")
 }
 
 func (b *Bootctl) SetDefaultEntries(entriesName string) error {
-	file,err:=os.OpenFile(b.bootPath+"/loader/loader.conf",os.O_CREATE | os.O_RDWR | os.O_TRUNC,755)
+	file,err:=os.OpenFile(b.bootPath+"/loader/loader.conf",os.O_CREATE | os.O_RDWR | os.O_TRUNC,0755)
 	if err != nil {
 		return err
 	}
@@ -60,9 +66,9 @@ func (b *Bootctl) SetDefaultEntries(entriesName string) error {
 }
 
 func (b *Bootctl) CreateEntries(confName,partuuid string,fallback bool) error {
-	temp := `title   FireRain Linux{{ if .fallback }}(fallback){{ endif }}
+	temp := `title   FireRain Linux{{ if .fallback }} (fallback){{ end }}
 linux   /vmlinuz-linux
-initrd  /initramfs-linux{{ if .fallback }}-fallback{{ endif }}.img
+initrd  /initramfs-linux{{ if .fallback }}-fallback{{ end }}.img
 options root=PARTUUID={{ .partuuid }} rw`
 
 	t,err:=template.New("entries").Parse(temp)
@@ -70,12 +76,12 @@ options root=PARTUUID={{ .partuuid }} rw`
 		return err
 	}
 
-	file,err:=os.OpenFile(b.bootPath+"/loader/entries/"+confName,os.O_CREATE | os.O_RDWR | os.O_TRUNC,755)
+	file,err:=os.OpenFile(b.bootPath+"/loader/entries/"+confName,os.O_CREATE | os.O_RDWR | os.O_TRUNC,0755)
 	if err != nil {
 		return err
 	}
 
-	err = t.Execute(file,template.FuncMap{"partuuid":partuuid,"fallback":false})
+	err = t.Execute(file,template.FuncMap{"partuuid":partuuid,"fallback":fallback})
 	file.Close()
 	return err
 }
@@ -86,5 +92,6 @@ func (b *Bootctl) getPARTUUID(device string) (string,error) {
 	if err != nil {
 		return "",err
 	}
-	return string(out),nil
+	str := string(out)
+	return str[:len(str)-1],nil
 }
