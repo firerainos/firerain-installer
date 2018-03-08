@@ -12,15 +12,15 @@ type MainWindow struct {
 func NewMainWindow() *MainWindow {
 	mainWindow := widgets.NewQMainWindow(nil,0)
 
+	mainWindow.SetWindowTitle("firerain-installer")
+	mainWindow.SetFixedSize(core.NewQSize2(900,700))
+
+	frame := NewMainFrame(mainWindow,0)
+	mainWindow.SetCentralWidget(frame.frame)
+
 	m := MainWindow{mainWindow}
-	m.initUI()
 
 	return &m
-}
-
-func (m *MainWindow) initUI(){
-	m.mainWindow.SetWindowTitle("firerain-installer")
-	m.mainWindow.SetFixedSize(core.NewQSize2(900,700))
 }
 
 func (m *MainWindow) Show() {
