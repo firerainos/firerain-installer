@@ -2,23 +2,14 @@ package main
 
 import (
 	"os"
-
-	"github.com/therecipe/qt/core"
-	"github.com/therecipe/qt/gui"
-	"github.com/therecipe/qt/qml"
-	"github.com/therecipe/qt/quickcontrols2"
+	"github.com/therecipe/qt/widgets"
+	"github.com/firerainos/firerain-installer/ui"
 )
 
 func main() {
-	app := gui.NewQGuiApplication(len(os.Args), os.Args)
+	widgets.NewQApplication(len(os.Args), os.Args)
 
-	app.SetAttribute(core.Qt__AA_EnableHighDpiScaling, true)
+	ui.NewMainWindow().Show()
 
-	quickcontrols2.QQuickStyle_SetStyle("material")
-
-	engine := qml.NewQQmlApplicationEngine(nil)
-
-	engine.Load(core.NewQUrl3("qml/main.qml", 0))
-
-	gui.QGuiApplication_Exec()
+	widgets.QApplication_Exec()
 }
