@@ -3,7 +3,7 @@ package page
 import (
 	"github.com/therecipe/qt/widgets"
 	"github.com/therecipe/qt/core"
-	"github.com/firerainos/firerain-installer/core/networkmanager"
+	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 )
 
 type NetworkPage struct {
@@ -22,18 +22,10 @@ func (n *NetworkPage) init() {
 
 	networkLabel := widgets.NewQLabel2("Network",n,0)
 
-	wifiListWidget := widgets.NewQListWidget(n)
-
-	nm := networkmanager.NewNetworkManager()
-	nm.WifiScan()
-
-	list := nm.WifiList()
-
-	for _,wifi := range *list  {
-		wifiListWidget.AddItem(wifi.Ssid)
-	}
+	wifiList := widgets2.NewWifiList(n)
 
 	vboxLayout.AddWidget(networkLabel,0,core.Qt__AlignCenter)
+	vboxLayout.AddWidget(wifiList,0,core.Qt__AlignCenter)
 
 	n.SetLayout(vboxLayout)
 }
