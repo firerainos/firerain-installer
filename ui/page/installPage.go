@@ -6,19 +6,24 @@ import (
 )
 
 type InstallPage struct {
-	Frame *widgets.QFrame
+	*widgets.QFrame
 }
 
 func NewInstallPage(parent widgets.QWidget_ITF,fo core.Qt__WindowType) *InstallPage {
 	frame := widgets.NewQFrame(parent,fo)
 
-	vboxLayout := widgets.NewQVBoxLayout2(frame)
+	page:= &InstallPage{frame}
+	page.init()
 
-	welcomeLabel := widgets.NewQLabel2("Install",frame,0)
+	return page
+}
+
+func (i *InstallPage) init() {
+	vboxLayout := widgets.NewQVBoxLayout2(i)
+
+	welcomeLabel := widgets.NewQLabel2("Install",i,0)
 
 	vboxLayout.AddWidget(welcomeLabel,0,core.Qt__AlignCenter)
 
-	frame.SetLayout(vboxLayout)
-
-	return &InstallPage{frame}
+	i.SetLayout(vboxLayout)
 }

@@ -6,19 +6,24 @@ import (
 )
 
 type SelectDMPage struct {
-	Frame *widgets.QFrame
+	*widgets.QFrame
 }
 
 func NewSelectDMPage(parent widgets.QWidget_ITF,fo core.Qt__WindowType) *SelectDMPage {
 	frame := widgets.NewQFrame(parent,fo)
 
-	vboxLayout := widgets.NewQVBoxLayout2(frame)
+	page := &SelectDMPage{frame}
+	page.init()
 
-	welcomeLabel := widgets.NewQLabel2("SelectDM",frame,0)
+	return page
+}
+
+func (s *SelectDMPage) init(){
+	vboxLayout := widgets.NewQVBoxLayout2(s)
+
+	welcomeLabel := widgets.NewQLabel2("SelectDM",s,0)
 
 	vboxLayout.AddWidget(welcomeLabel,0,core.Qt__AlignCenter)
 
-	frame.SetLayout(vboxLayout)
-
-	return &SelectDMPage{frame}
+	s.SetLayout(vboxLayout)
 }

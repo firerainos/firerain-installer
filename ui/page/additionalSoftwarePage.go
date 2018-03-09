@@ -6,19 +6,24 @@ import (
 )
 
 type AdditionalSoftwarePage struct {
-	Frame *widgets.QFrame
+	*widgets.QFrame
 }
 
 func NewAdditionalSoftwarePage(parent widgets.QWidget_ITF,fo core.Qt__WindowType) *AdditionalSoftwarePage {
 	frame := widgets.NewQFrame(parent,fo)
 
-	vboxLayout := widgets.NewQVBoxLayout2(frame)
+	page := &AdditionalSoftwarePage{frame}
+	page.init()
 
-	welcomeLabel := widgets.NewQLabel2("AdditionalSoftware",frame,0)
+	return page
+}
+
+func (a *AdditionalSoftwarePage) init() {
+	vboxLayout := widgets.NewQVBoxLayout2(a)
+
+	welcomeLabel := widgets.NewQLabel2("AdditionalSoftware",a,0)
 
 	vboxLayout.AddWidget(welcomeLabel,0,core.Qt__AlignCenter)
 
-	frame.SetLayout(vboxLayout)
-
-	return &AdditionalSoftwarePage{frame}
+	a.SetLayout(vboxLayout)
 }

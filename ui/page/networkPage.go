@@ -3,22 +3,37 @@ package page
 import (
 	"github.com/therecipe/qt/widgets"
 	"github.com/therecipe/qt/core"
+	"github.com/firerainos/firerain-installer/core/networkmanager"
 )
 
 type NetworkPage struct {
-	Frame *widgets.QFrame
+	*widgets.QFrame
 }
 
 func NewNetworkPage(parent widgets.QWidget_ITF,fo core.Qt__WindowType) *NetworkPage {
-	frame := widgets.NewQFrame(parent,fo)
+	page := &NetworkPage{widgets.NewQFrame(parent,fo)}
+	page.init()
 
-	vboxLayout := widgets.NewQVBoxLayout2(frame)
+	return page
+}
 
-	welcomeLabel := widgets.NewQLabel2("Network",frame,0)
+func (n *NetworkPage) init() {
+	vboxLayout := widgets.NewQVBoxLayout2(n)
 
-	vboxLayout.AddWidget(welcomeLabel,0,core.Qt__AlignCenter)
+	networkLabel := widgets.NewQLabel2("Network",n,0)
 
-	frame.SetLayout(vboxLayout)
+	wifiListWidget := widgets.NewQListWidget(n)
 
-	return &NetworkPage{frame}
+	nm := networkmanager.NewNetworkManager()
+	nm.WifiScan()
+
+	list := nm.WifiList()
+
+	for _,wifi := range *list  {
+		wifiListWidget.AddItem(wifi.Ssid)
+	}
+
+	vboxLayout.AddWidget(networkLabel,0,core.Qt__AlignCenter)
+
+	n.SetLayout(vboxLayout)
 }

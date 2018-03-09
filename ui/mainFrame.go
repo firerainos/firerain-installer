@@ -7,59 +7,77 @@ import (
 )
 
 type MainFrame struct {
-	frame *widgets.QFrame
+	*widgets.QFrame
+
+	welcomePage *page.WelcomePage
+	networkPage *page.NetworkPage
+	partitionPage *page.PartitionPage
+	selectDMPage *page.SelectDMPage
+	additionalSoftwarePage *page.AdditionalSoftwarePage
+	installPage *page.InstallPage
+
+	backButton,nextButton *widgets.QPushButton
+
+	stackLayout *widgets.QStackedLayout
 }
 
 func NewMainFrame(parent widgets.QWidget_ITF,fo core.Qt__WindowType) *MainFrame {
-	frame := widgets.NewQFrame(parent,fo)
+	frame:=&MainFrame{QFrame:widgets.NewQFrame(parent,fo)}
 
+	frame.init()
+	frame.initConnect()
+
+	return frame
+}
+
+func (m *MainFrame) init() {
 	vboxLayout := widgets.NewQVBoxLayout()
 
-	stackLayout := widgets.NewQStackedLayout()
+	m.stackLayout = widgets.NewQStackedLayout()
 
-	welcomePage := page.NewWelcomePage(frame,0)
-	networkPage := page.NewNetworkPage(frame,0)
-	partitionPage := page.NewPartitionPage(frame, 0)
-	selectDMPage := page.NewSelectDMPage(frame, 0)
-	additionalSoftwarePage := page.NewAdditionalSoftwarePage(frame, 0)
-	installPage := page.NewInstallPage(frame,0)
+	m.welcomePage = page.NewWelcomePage(m,0)
+	m.networkPage = page.NewNetworkPage(m,0)
+	m.partitionPage = page.NewPartitionPage(m, 0)
+	m.selectDMPage = page.NewSelectDMPage(m, 0)
+	m.additionalSoftwarePage = page.NewAdditionalSoftwarePage(m, 0)
+	m.installPage = page.NewInstallPage(m,0)
 
-	backButton := widgets.NewQPushButton2("back",frame)
-	nextButton := widgets.NewQPushButton2("next",frame)
+	m.backButton = widgets.NewQPushButton2("back",m)
+	m.nextButton = widgets.NewQPushButton2("next",m)
 
-	backButton.SetVisible(false)
+	m.backButton.SetVisible(false)
 
-	stackLayout.AddWidget(welcomePage.Frame)
-	stackLayout.AddWidget(networkPage.Frame)
-	stackLayout.AddWidget(partitionPage.Frame)
-	stackLayout.AddWidget(selectDMPage.Frame)
-	stackLayout.AddWidget(additionalSoftwarePage.Frame)
-	stackLayout.AddWidget(installPage.Frame)
+	m.stackLayout.AddWidget(m.welcomePage)
+	m.stackLayout.AddWidget(m.networkPage)
+	m.stackLayout.AddWidget(m.partitionPage)
+	m.stackLayout.AddWidget(m.selectDMPage)
+	m.stackLayout.AddWidget(m.additionalSoftwarePage)
+	m.stackLayout.AddWidget(m.installPage)
 
-	vboxLayout.AddWidget(backButton,0,core.Qt__AlignLeft)
-	vboxLayout.AddLayout(stackLayout,1)
-	vboxLayout.AddWidget(nextButton,0,core.Qt__AlignHCenter)
+	vboxLayout.AddWidget(m.backButton,0,core.Qt__AlignLeft)
+	vboxLayout.AddLayout(m.stackLayout,1)
+	vboxLayout.AddWidget(m.nextButton,0,core.Qt__AlignHCenter)
 
-	frame.SetLayout(vboxLayout)
+	m.SetLayout(vboxLayout)
+}
 
-	stackLayout.ConnectCurrentChanged(func(index int) {
+func (m *MainFrame) initConnect() {
+	m.stackLayout.ConnectCurrentChanged(func(index int) {
 		if index == 0 {
-			backButton.SetVisible(false)
-		} else if index == stackLayout.Count() - 1 {
-			nextButton.SetVisible(false)
-			backButton.SetVisible(false)
+			m.backButton.SetVisible(false)
+		} else if index == m.stackLayout.Count() - 1 {
+			m.nextButton.SetVisible(false)
+			m.backButton.SetVisible(false)
 		} else if index > 0 {
-			backButton.SetVisible(true)
+			m.backButton.SetVisible(true)
 		}
 	})
 
-	backButton.ConnectClicked(func(checked bool) {
-		stackLayout.SetCurrentIndex(stackLayout.CurrentIndex()-1)
+	m.backButton.ConnectClicked(func(checked bool) {
+		m.stackLayout.SetCurrentIndex(m.stackLayout.CurrentIndex()-1)
 	})
 
-	nextButton.ConnectClicked(func(checked bool) {
-		stackLayout.SetCurrentIndex(stackLayout.CurrentIndex()+1)
+	m.nextButton.ConnectClicked(func(checked bool) {
+		m.stackLayout.SetCurrentIndex(m.stackLayout.CurrentIndex()+1)
 	})
-
-	return &MainFrame{frame}
 }

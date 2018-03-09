@@ -6,19 +6,24 @@ import (
 )
 
 type PartitionPage struct {
-	Frame *widgets.QFrame
+	*widgets.QFrame
 }
 
 func NewPartitionPage(parent widgets.QWidget_ITF,fo core.Qt__WindowType) *PartitionPage {
 	frame := widgets.NewQFrame(parent,fo)
 
-	vboxLayout := widgets.NewQVBoxLayout2(frame)
+	page := &PartitionPage{frame}
+	page.init()
 
-	welcomeLabel := widgets.NewQLabel2("Partition",frame,0)
+	return page
+}
+
+func (p *PartitionPage) init() {
+	vboxLayout := widgets.NewQVBoxLayout2(p)
+
+	welcomeLabel := widgets.NewQLabel2("Partition",p,0)
 
 	vboxLayout.AddWidget(welcomeLabel,0,core.Qt__AlignCenter)
 
-	frame.SetLayout(vboxLayout)
-
-	return &PartitionPage{frame}
+	p.SetLayout(vboxLayout)
 }
