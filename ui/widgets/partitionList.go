@@ -7,21 +7,19 @@ import (
 )
 
 type PartitionList struct {
-	*widgets.QScrollArea
+	widgets.QScrollArea
 
 	hboxLayout *widgets.QHBoxLayout
+	buttonGroup *widgets.QButtonGroup
+	listItems []*PartitionListItem
 
 	parted *parted.Parted
-}
 
-func NewPartitionList(parent widgets.QWidget_ITF) *PartitionList {
-	widget := widgets.NewQScrollArea(parent)
+	currendItem *PartitionListItem
 
-	partitionList := &PartitionList{QScrollArea: widget,parted:parted.NewParted()}
-	partitionList.init()
-	partitionList.ScanPartition()
+	_ func() `constructor:"init"`
 
-	return partitionList
+	_ func() `signal:"partitionItemChange"`
 }
 
 func (p *PartitionList) init() {
@@ -34,10 +32,25 @@ func (p *PartitionList) init() {
 	p.hboxLayout = widgets.NewQHBoxLayout2(frame)
 	p.hboxLayout.SetContentsMargins(40,40,40,20)
 
+	p.buttonGroup = widgets.NewQButtonGroup(p)
+
 	frame.SetLayout(p.hboxLayout)
 
 	p.SetWidget(frame)
+
+	p.parted = parted.NewParted()
+
+	p.initConnect()
+	p.ScanPartition()
 }
+
+func (p *PartitionList) initConnect() {
+	p.buttonGroup.ConnectButtonClicked2(func(id int) {
+		p.currendItem = p.listItems[id]
+		p.PartitionItemChange()
+	})
+}
+
 
 func (p *PartitionList) ScanPartition() {
 	for {
@@ -55,6 +68,10 @@ func (p *PartitionList) ScanPartition() {
 		}
 	}
 
+	for _,item := range p.buttonGroup.Buttons() {
+		p.buttonGroup.RemoveButton(item)
+	}
+
 	devices,err := p.parted.List()
 	if err != nil {
 		return
@@ -67,6 +84,12 @@ func (p *PartitionList) ScanPartition() {
 			}
 			item := NewPartitionListItem(partition,p)
 			p.hboxLayout.AddWidget(item,0,core.Qt__AlignCenter)
+			p.buttonGroup.AddButton(item, len(p.listItems))
+			p.listItems = append(p.listItems, item)
 		}
 	}
+}
+
+func (p *PartitionList) CurrendItem() *PartitionListItem {
+	return p.currendItem
 }

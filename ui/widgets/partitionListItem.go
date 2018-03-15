@@ -5,6 +5,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/firerainos/firerain-installer/core/parted"
 	"strconv"
+	"strings"
 )
 
 type PartitionListItem struct {
@@ -32,8 +33,13 @@ func (p *PartitionListItem) init() {
 
 	p.iconLabel = widgets.NewQLabel(p, 0)
 	device := p.partition.Device.Disk+strconv.Itoa(p.partition.Number)
-	nameLabel := widgets.NewQLabel2(p.partition.Name+"(" + device + ")",p,0)
-	sizeLabel := widgets.NewQLabel2(p.partition.Size,p,0)
+	device = strings.Replace(device,"/dev/","",1)
+	name := p.partition.Name
+	if name == "" {
+		name = "未命名"
+	}
+	nameLabel := widgets.NewQLabel2(name+"(" + device + ")",p,0)
+	sizeLabel := widgets.NewQLabel2("总共 "+p.partition.Size,p,0)
 
 	p.iconLabel.SetFixedSize2(120,120)
 
@@ -52,4 +58,12 @@ func (p *PartitionListItem) SetSelect(selected bool)  {
 	} else {
 
 	}
+}
+
+func (p *PartitionListItem) DevPath() string {
+	return p.partition.Device.Disk+strconv.Itoa(p.partition.Number)
+}
+
+func (p *PartitionListItem) Size() string {
+	return p.partition.Size
 }
