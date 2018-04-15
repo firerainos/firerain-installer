@@ -1,17 +1,17 @@
 package widgets
 
 import (
-	"github.com/therecipe/qt/widgets"
-	"github.com/therecipe/qt/core"
 	"github.com/firerainos/firerain-installer/core/parted"
+	"github.com/therecipe/qt/core"
+	"github.com/therecipe/qt/widgets"
 )
 
 type PartitionList struct {
 	widgets.QScrollArea
 
-	hboxLayout *widgets.QHBoxLayout
+	hboxLayout  *widgets.QHBoxLayout
 	buttonGroup *widgets.QButtonGroup
-	listItems []*PartitionListItem
+	listItems   []*PartitionListItem
 
 	parted *parted.Parted
 
@@ -23,14 +23,14 @@ type PartitionList struct {
 }
 
 func (p *PartitionList) init() {
-	p.SetMinimumSize2(500,290)
+	p.SetMinimumSize2(500, 290)
 	p.SetWidgetResizable(true)
 	p.SetVerticalScrollBarPolicy(core.Qt__ScrollBarAlwaysOff)
 
-	frame := widgets.NewQFrame(p,0)
+	frame := widgets.NewQFrame(p, 0)
 
 	p.hboxLayout = widgets.NewQHBoxLayout2(frame)
-	p.hboxLayout.SetContentsMargins(40,40,40,20)
+	p.hboxLayout.SetContentsMargins(40, 40, 40, 20)
 
 	p.buttonGroup = widgets.NewQButtonGroup(p)
 
@@ -51,7 +51,6 @@ func (p *PartitionList) initConnect() {
 	})
 }
 
-
 func (p *PartitionList) ScanPartition() {
 	for {
 		item := p.hboxLayout.TakeAt(0)
@@ -68,22 +67,22 @@ func (p *PartitionList) ScanPartition() {
 		}
 	}
 
-	for _,item := range p.buttonGroup.Buttons() {
+	for _, item := range p.buttonGroup.Buttons() {
 		p.buttonGroup.RemoveButton(item)
 	}
 
-	devices,err := p.parted.List()
+	devices, err := p.parted.List()
 	if err != nil {
 		return
 	}
 
-	for _,dev := range devices {
-		for _,partition := range dev.Partitions{
-			if partition.FileSystem!="btrfs" {
+	for _, dev := range devices {
+		for _, partition := range dev.Partitions {
+			if partition.FileSystem != "btrfs" {
 				continue
 			}
-			item := NewPartitionListItem(partition,p)
-			p.hboxLayout.AddWidget(item,0,core.Qt__AlignCenter)
+			item := NewPartitionListItem(partition, p)
+			p.hboxLayout.AddWidget(item, 0, core.Qt__AlignCenter)
 			p.buttonGroup.AddButton(item, len(p.listItems))
 			p.listItems = append(p.listItems, item)
 		}

@@ -63,7 +63,7 @@ func (m *MainFrame) init() {
 	m.stackLayout.AddWidget(m.installPage)
 
 	vboxLayout.AddLayout(m.stackLayout, 1)
-	vboxLayout.AddLayout(hboxLayout,1)
+	vboxLayout.AddLayout(hboxLayout, 1)
 	vboxLayout.AddSpacing(20)
 
 	m.SetLayout(vboxLayout)

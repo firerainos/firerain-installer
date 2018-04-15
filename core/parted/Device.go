@@ -1,10 +1,10 @@
 package parted
 
 import (
-	"os/exec"
 	"os"
-	"strings"
+	"os/exec"
 	"strconv"
+	"strings"
 )
 
 type Device struct {
@@ -51,10 +51,10 @@ func ScanDevice() ([]Device, error) {
 				num, _ := strconv.Atoi(tmps[0])
 				flags := strings.Split(tmps[len(tmps)-1], ",")
 				name := tmps[len(tmps)-2]
-				if strings.Contains(name,"8bit") {
+				if strings.Contains(name, "8bit") {
 					name = ""
 				}
-				partition := NewPartition(device,num, tmps[1], tmps[2], tmps[3], tmps[4], name, flags)
+				partition := NewPartition(device, num, tmps[1], tmps[2], tmps[3], tmps[4], name, flags)
 				device.Partitions = append(device.Partitions, partition)
 			}
 		}

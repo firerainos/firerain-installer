@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
-	"github.com/therecipe/qt/widgets"
 	"github.com/firerainos/firerain-installer/ui"
+	"github.com/therecipe/qt/widgets"
+	"os"
 )
 
 func main() {

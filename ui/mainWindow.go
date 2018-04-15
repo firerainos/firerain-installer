@@ -1,8 +1,8 @@
 package ui
 
 import (
-	"github.com/therecipe/qt/widgets"
 	"github.com/therecipe/qt/core"
+	"github.com/therecipe/qt/widgets"
 )
 
 type MainWindow struct {
@@ -10,7 +10,7 @@ type MainWindow struct {
 }
 
 func NewMainWindow() *MainWindow {
-	w := widgets.NewQMainWindow(nil,0)
+	w := widgets.NewQMainWindow(nil, 0)
 
 	m := &MainWindow{w}
 	m.init()
@@ -20,8 +20,8 @@ func NewMainWindow() *MainWindow {
 
 func (m *MainWindow) init() {
 	m.SetWindowTitle("firerain-installer")
-	m.SetFixedSize(core.NewQSize2(900,700))
+	m.SetFixedSize(core.NewQSize2(900, 700))
 
-	frame := NewMainFrame(m,0)
+	frame := NewMainFrame(m, 0)
 	m.SetCentralWidget(frame)
 }
