@@ -10,7 +10,7 @@ type Config struct {
 
 
 func InitConfig() {
-	Conf = &Config{}
+	Conf = &Config{Account:&Account{},Package:&Package{}}
 }
 
 func (config *Config) SetInstallDev(dev string) {
