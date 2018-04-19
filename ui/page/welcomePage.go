@@ -1,9 +1,9 @@
 package page
 
 import (
+	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
-	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 )
 
 type WelcomePage struct {
@@ -22,7 +22,7 @@ func (w *WelcomePage) init() {
 	vboxLayout := widgets.NewQVBoxLayout2(w)
 	vboxLayout.SetContentsMargins(0, 0, 0, 0)
 
-	hellWidget := widgets2.NewHelloWidget(w,0)
+	hellWidget := widgets2.NewHelloWidget(w, 0)
 
 	vboxLayout.AddWidget(hellWidget, 0, core.Qt__AlignCenter)
 	vboxLayout.AddStretch(1)
