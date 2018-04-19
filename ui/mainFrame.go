@@ -11,6 +11,7 @@ type MainFrame struct {
 
 	welcomePage            *page.WelcomePage
 	networkPage            *page.NetworkPage
+	accountPage            *page.AccountPage
 	partitionPage          *page.PartitionPage
 	selectDEPage           *page.SelectDEPage
 	additionalSoftwarePage *page.AdditionalSoftwarePage
@@ -38,6 +39,7 @@ func (m *MainFrame) init() {
 
 	m.welcomePage = page.NewWelcomePage(m, 0)
 	m.networkPage = page.NewNetworkPage(m, 0)
+	m.accountPage = page.NewAccountPage(m, 0)
 	m.partitionPage = page.NewPartitionPage(m, 0)
 	m.selectDEPage = page.NewSelectDEPage(m, 0)
 	m.additionalSoftwarePage = page.NewAdditionalSoftwarePage(m, 0)
@@ -57,6 +59,7 @@ func (m *MainFrame) init() {
 
 	m.stackLayout.AddWidget(m.welcomePage)
 	m.stackLayout.AddWidget(m.networkPage)
+	m.stackLayout.AddWidget(m.accountPage)
 	m.stackLayout.AddWidget(m.partitionPage)
 	m.stackLayout.AddWidget(m.selectDEPage)
 	m.stackLayout.AddWidget(m.additionalSoftwarePage)
