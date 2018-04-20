@@ -5,6 +5,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
+	"github.com/firerainos/firerain-installer/config"
 )
 
 type PartitionPage struct {
@@ -47,5 +48,6 @@ func (p *PartitionPage) init() {
 func (p *PartitionPage) initConnect() {
 	p.partitionList.ConnectPartitionItemChange(func() {
 		p.tipLabel.SetText("FireRainOS 将安装在磁盘\"" + p.partitionList.CurrendItem().DevPath() + "\"上")
+		config.Conf.SetInstallDev(p.partitionList.CurrendItem().DevPath())
 	})
 }
