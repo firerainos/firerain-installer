@@ -1,17 +1,19 @@
 package page
 
 import (
-	"fmt"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"os"
+	"github.com/firerainos/firerain-installer/config"
 )
 
 type SelectDEPage struct {
 	*widgets.QFrame
 
 	deListWidget *widgets.QListWidget
+
+	deName string
 }
 
 func NewSelectDEPage(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *SelectDEPage {
@@ -53,6 +55,8 @@ func (s *SelectDEPage) init() {
 
 func (s *SelectDEPage) initConnect() {
 	s.deListWidget.ConnectCurrentTextChanged(func(currentText string) {
-		fmt.Println(currentText)
+		config.Conf.RemovePackage(s.deName)
+		s.deName= currentText
+		config.Conf.AddPackage(s.deName)
 	})
 }
