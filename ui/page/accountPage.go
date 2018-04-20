@@ -5,6 +5,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"os"
+	"github.com/firerainos/firerain-installer/config"
 )
 
 type AccountPage struct {
@@ -38,4 +39,12 @@ func (page *AccountPage) init() {
 	vboxLayout.AddStretch(1)
 
 	page.SetLayout(vboxLayout)
+
+	username.ConnectLeaveEvent(func(event *core.QEvent) {
+		config.Conf.SetUsername(username.Text())
+	})
+
+	password.ConnectLeaveEvent(func(event *core.QEvent) {
+		config.Conf.SetPassword(password.Text())
+	})
 }
