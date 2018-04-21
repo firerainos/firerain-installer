@@ -30,6 +30,7 @@ func (page *AccountPage) init() {
 
 	username := widgets2.NewLineEdit(pwd+"/resources/username.svg", page)
 	password := widgets2.NewLineEdit(pwd+"/resources/password.svg", page)
+	password.SetEchoMode(widgets.QLineEdit__Password)
 
 	vboxLayout.AddStretch(1)
 	vboxLayout.AddWidget(loginLabel, 0, core.Qt__AlignCenter)
