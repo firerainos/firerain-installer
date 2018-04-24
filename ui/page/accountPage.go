@@ -33,6 +33,7 @@ func (page *AccountPage) init() {
 	loginLabel := widgets.NewQLabel2("登陆", page, 0)
 
 	page.tipsLabel = widgets.NewQLabel(page,0)
+	page.tipsLabel.SetFixedWidth(200)
 	page.tipsLabel.SetAlignment(core.Qt__AlignCenter)
 
 	page.username = widgets2.NewLineEdit(pwd+"/resources/username.svg", page)
