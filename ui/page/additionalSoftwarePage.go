@@ -139,7 +139,9 @@ func (a *AdditionalSoftwarePage) LoadData() {
 	a.itemList.SetCurrentRow(0)
 
 	a.packageList.SetModel(a.packageModel[0])
+}
 
+func (a *AdditionalSoftwarePage) LoadInstallList() {
 	a.installModel = core.NewQStringListModel2(config.Conf.PkgList, a)
 	a.installList.SetEditTriggers(widgets.QAbstractItemView__NoEditTriggers)
 	a.installList.SetModel(a.installModel)
