@@ -115,11 +115,12 @@ func (m *MainFrame) initConnect() {
 				m.accountPage.SetEnableLogin(true)
 				return
 			}
+			m.additionalSoftwarePage.LoadData()
 
 			m.accountPage.SetEnableLogin(true)
 			m.accountPage.SetTips("")
 		case 4:
-			m.additionalSoftwarePage.LoadData()
+			m.additionalSoftwarePage.LoadInstallList()
 		}
 		m.stackLayout.SetCurrentIndex(index + 1)
 	})
