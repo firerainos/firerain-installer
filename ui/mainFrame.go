@@ -119,6 +119,10 @@ func (m *MainFrame) initConnect() {
 
 			m.accountPage.SetEnableLogin(true)
 			m.accountPage.SetTips("")
+		case 3:
+			if config.Conf.InstallDev == "" {
+				return
+			}
 		case 4:
 			m.additionalSoftwarePage.LoadInstallList()
 		}
