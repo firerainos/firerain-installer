@@ -10,12 +10,12 @@ func (p *Package) AddPackage(pkg string) {
 
 func (p *Package) RemovePackage(pkg string) {
 	var list []string
-	for _,name := range p.PkgList {
+	for _, name := range p.PkgList {
 		if name != pkg {
 			list = append(list, name)
 		}
 	}
-	p.PkgList=list
+	p.PkgList = list
 }
 
 func (p *Package) SearchPackage(pkg string) bool {

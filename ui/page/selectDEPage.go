@@ -1,11 +1,11 @@
 package page
 
 import (
+	"github.com/firerainos/firerain-installer/config"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"os"
-	"github.com/firerainos/firerain-installer/config"
 )
 
 type SelectDEPage struct {
@@ -55,20 +55,20 @@ func (s *SelectDEPage) init() {
 
 func (s *SelectDEPage) initConnect() {
 	s.deListWidget.ConnectCurrentTextChanged(func(currentText string) {
-		for _,pkg := range s.deName{
+		for _, pkg := range s.deName {
 			config.Conf.RemovePackage(pkg)
 		}
 		switch currentText {
 		case "KDE":
-			s.deName= []string{"plasma-meta","sddm","dolphin","konsole","kate"}
+			s.deName = []string{"plasma-meta", "sddm", "dolphin", "konsole", "kate"}
 		case "DDE":
-			s.deName= []string{"deepin","lightdm"}
+			s.deName = []string{"deepin", "lightdm"}
 		case "Cinnamon":
-			s.deName= []string{"cinnamon","cinnamon-translations","lightdm","lightdm-gtk-greeter"}
+			s.deName = []string{"cinnamon", "cinnamon-translations", "lightdm", "lightdm-gtk-greeter"}
 		case "GNOME":
-			s.deName= []string{"gnome","lightdm","lightdm-gtk-greeter"}
+			s.deName = []string{"gnome", "lightdm", "lightdm-gtk-greeter"}
 		}
-		for _,pkg := range s.deName{
+		for _, pkg := range s.deName {
 			config.Conf.AddPackage(pkg)
 		}
 	})

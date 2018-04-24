@@ -8,9 +8,8 @@ type Config struct {
 	InstallDev string
 }
 
-
 func InitConfig() {
-	Conf = &Config{Account:&Account{},Package:&Package{}}
+	Conf = &Config{Account: &Account{}, Package: &Package{}}
 	Conf.AddPackage("base")
 	Conf.AddPackage("base-devel")
 	Conf.AddPackage("vim")

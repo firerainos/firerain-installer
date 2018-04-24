@@ -1,11 +1,11 @@
 package page
 
 import (
+	"github.com/firerainos/firerain-installer/config"
 	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
-	"github.com/firerainos/firerain-installer/config"
 )
 
 type PartitionPage struct {

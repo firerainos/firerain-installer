@@ -6,9 +6,9 @@ type Account struct {
 }
 
 func (a *Account) SetUsername(username string) {
-	a.Username=username
+	a.Username = username
 }
 
 func (a *Account) SetPassword(password string) {
-	a.Password=password
+	a.Password = password
 }
