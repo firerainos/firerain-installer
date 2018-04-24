@@ -13,7 +13,7 @@ type SelectDEPage struct {
 
 	deListWidget *widgets.QListWidget
 
-	deName string
+	deName []string
 }
 
 func NewSelectDEPage(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *SelectDEPage {
@@ -55,8 +55,21 @@ func (s *SelectDEPage) init() {
 
 func (s *SelectDEPage) initConnect() {
 	s.deListWidget.ConnectCurrentTextChanged(func(currentText string) {
-		config.Conf.RemovePackage(s.deName)
-		s.deName= currentText
-		config.Conf.AddPackage(s.deName)
+		for _,pkg := range s.deName{
+			config.Conf.RemovePackage(pkg)
+		}
+		switch currentText {
+		case "KDE":
+			s.deName= []string{"plasma-meta","sddm","dolphin","konsole","kate"}
+		case "DDE":
+			s.deName= []string{"deepin","lightdm"}
+		case "Cinnamon":
+			s.deName= []string{"cinnamon","cinnamon-translations","lightdm","lightdm-gtk-greeter"}
+		case "GNOME":
+			s.deName= []string{"gnome","lightdm","lightdm-gtk-greeter"}
+		}
+		for _,pkg := range s.deName{
+			config.Conf.AddPackage(pkg)
+		}
 	})
 }
