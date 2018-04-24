@@ -1,9 +1,12 @@
 package ui
 
 import (
+	"github.com/firerainos/firerain-installer/api"
+	"github.com/firerainos/firerain-installer/config"
 	"github.com/firerainos/firerain-installer/ui/page"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"strings"
 )
 
 type MainFrame struct {
@@ -20,10 +23,12 @@ type MainFrame struct {
 	backButton, nextButton *widgets.QPushButton
 
 	stackLayout *widgets.QStackedLayout
+
+	account *api.Account
 }
 
 func NewMainFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *MainFrame {
-	frame := &MainFrame{QFrame: widgets.NewQFrame(parent, fo)}
+	frame := &MainFrame{QFrame: widgets.NewQFrame(parent, fo), account: api.NewAccount()}
 
 	frame.init()
 	frame.initConnect()
@@ -42,7 +47,7 @@ func (m *MainFrame) init() {
 	m.accountPage = page.NewAccountPage(m, 0)
 	m.partitionPage = page.NewPartitionPage(m, 0)
 	m.selectDEPage = page.NewSelectDEPage(m, 0)
-	m.additionalSoftwarePage = page.NewAdditionalSoftwarePage(m, 0)
+	m.additionalSoftwarePage = page.NewAdditionalSoftwarePage(m.account, m, 0)
 	m.installPage = page.NewInstallPage(m, 0)
 
 	m.backButton = widgets.NewQPushButton2("back", m)
@@ -89,6 +94,33 @@ func (m *MainFrame) initConnect() {
 	})
 
 	m.nextButton.ConnectClicked(func(checked bool) {
-		m.stackLayout.SetCurrentIndex(m.stackLayout.CurrentIndex() + 1)
+		index := m.stackLayout.CurrentIndex()
+		switch index {
+		case 2:
+			if config.Conf.Username == "" || config.Conf.Password == "" {
+				m.accountPage.SetTips("请输入用户名或密码")
+				return
+			}
+
+			m.accountPage.SetEnableLogin(false)
+			m.accountPage.SetTips("登陆中...")
+			m.accountPage.Repaint()
+
+			if err := m.account.Login(config.Conf.Username, config.Conf.Password); err != nil {
+				if strings.Contains(err.Error(), "username or password errors") {
+					m.accountPage.SetTips("用户名或密码错误")
+				} else {
+					m.accountPage.SetTips("登陆失败")
+				}
+				m.accountPage.SetEnableLogin(true)
+				return
+			}
+
+			m.accountPage.SetEnableLogin(true)
+			m.accountPage.SetTips("")
+		case 4:
+			m.additionalSoftwarePage.LoadData()
+		}
+		m.stackLayout.SetCurrentIndex(index + 1)
 	})
 }
