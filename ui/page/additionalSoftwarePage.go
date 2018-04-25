@@ -82,7 +82,9 @@ func (a *AdditionalSoftwarePage) init() {
 
 func (a *AdditionalSoftwarePage) initConnect() {
 	a.itemList.ConnectCurrentChanged(func(current *core.QModelIndex, previous *core.QModelIndex) {
-		a.packageList.SetModel(a.packageModel[current.Row()])
+		if len(a.packageModel) != 0 {
+			a.packageList.SetModel(a.packageModel[current.Row()])
+		}
 	})
 
 	a.packageList.ConnectClicked(func(index *core.QModelIndex) {
@@ -120,6 +122,11 @@ func (a *AdditionalSoftwarePage) initConnect() {
 }
 
 func (a *AdditionalSoftwarePage) LoadData() {
+	if len(a.packageModel) !=0 {
+		a.packageModel = make([]*gui.QStandardItemModel,0)
+		a.itemList.Clear()
+	}
+
 	items, err := a.account.GetItem()
 	if err != nil {
 		log.Println(err)
