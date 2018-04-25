@@ -6,6 +6,7 @@ type Config struct {
 	*Account
 	*Package
 	InstallDev string
+	EFIDev string
 }
 
 func InitConfig() {
@@ -19,4 +20,7 @@ func InitConfig() {
 
 func (config *Config) SetInstallDev(dev string) {
 	config.InstallDev = dev
+}
+func (config *Config) SetEFIDev(dev string) {
+	config.EFIDev = dev
 }
