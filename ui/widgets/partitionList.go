@@ -5,6 +5,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"github.com/firerainos/firerain-installer/config"
+	"strconv"
 )
 
 type PartitionList struct {
@@ -79,9 +80,14 @@ func (p *PartitionList) ScanPartition() {
 
 	for _, dev := range devices {
 		for _, partition := range dev.Partitions {
+			if config.Conf.EFIDev == "" && (partition.FileSystem == "fat16" || partition.FileSystem == "fat32") {
+				config.Conf.SetEFIDev(partition.Device.Disk + strconv.Itoa(partition.Number))
+			}
+
 			if partition.FileSystem != "btrfs" {
 				continue
 			}
+
 			item := NewPartitionListItem(partition, p)
 			p.hboxLayout.AddWidget(item, 0, core.Qt__AlignCenter)
 			p.buttonGroup.AddButton(item, len(p.listItems))
