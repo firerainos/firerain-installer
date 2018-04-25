@@ -53,8 +53,8 @@ func (p *PartitionListItem) init() {
 }
 
 func (p *PartitionListItem) SetSelect(selected bool) {
+	p.SetChecked(selected)
 	if selected {
-
 	} else {
 
 	}

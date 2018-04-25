@@ -4,6 +4,7 @@ import (
 	"github.com/firerainos/firerain-installer/core/parted"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"github.com/firerainos/firerain-installer/config"
 )
 
 type PartitionList struct {
@@ -85,6 +86,7 @@ func (p *PartitionList) ScanPartition() {
 			p.hboxLayout.AddWidget(item, 0, core.Qt__AlignCenter)
 			p.buttonGroup.AddButton(item, len(p.listItems))
 			p.listItems = append(p.listItems, item)
+			item.SetSelect(config.Conf.InstallDev == item.DevPath())
 		}
 	}
 }
