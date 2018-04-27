@@ -35,6 +35,8 @@ func EnableServices() error {
 			return err
 		}
 	}
+
+	return nil
 }
 
 func EnableService(service string) error {
