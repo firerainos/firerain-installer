@@ -36,7 +36,7 @@ func EnableServices() error {
 		}
 	}
 
-	return nil
+	return ExitChroot()
 }
 
 func EnableService(service string) error {
