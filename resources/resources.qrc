@@ -1,0 +1,20 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/resources">
+        <file>backButton.png</file>
+        <file>backButtonFocus.png</file>
+        <file>backButtonFocusPressed.png</file>
+        <file>backButtonPressed.png</file>
+        <file>nextButton.png</file>
+        <file>nextButtonFocus.png</file>
+        <file>nextButtonFocusPressed.png</file>
+        <file>nextButtonPressed.png</file>
+        <file>username.svg</file>
+        <file>password.svg</file>
+        <file>logo.png</file>
+        <file>de-logo/cinnamon.png</file>
+        <file>de-logo/dde.png</file>
+        <file>de-logo/gnome.png</file>
+        <file>de-logo/kde.png</file>
+    </qresource>
+</RCC>
