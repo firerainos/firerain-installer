@@ -7,6 +7,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"strings"
+	"github.com/firerainos/firerain-installer/styles"
 )
 
 type MainFrame struct {
@@ -50,12 +51,19 @@ func (m *MainFrame) init() {
 	m.additionalSoftwarePage = page.NewAdditionalSoftwarePage(m.account, m, 0)
 	m.installPage = page.NewInstallPage(m, 0)
 
-	m.backButton = widgets.NewQPushButton2("back", m)
-	m.nextButton = widgets.NewQPushButton2("next", m)
+	m.backButton = widgets.NewQPushButton2("返回", m)
+	m.nextButton = widgets.NewQPushButton2("继续", m)
+
+	m.backButton.SetMinimumWidth(60)
+	m.nextButton.SetMinimumWidth(60)
+
+	m.backButton.SetStyleSheet(styles.BackButton)
+	m.nextButton.SetStyleSheet(styles.NextButton)
 
 	m.backButton.SetVisible(false)
 
 	hboxLayout := widgets.NewQHBoxLayout()
+	hboxLayout.SetSpacing(40)
 
 	hboxLayout.AddStretch(1)
 	hboxLayout.AddWidget(m.backButton, 0, core.Qt__AlignHCenter)
