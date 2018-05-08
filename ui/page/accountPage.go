@@ -1,11 +1,11 @@
 package page
 
 import (
+	_ "github.com/firerainos/firerain-installer/resources"
 	"github.com/firerainos/firerain-installer/config"
 	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
-	"os"
 )
 
 type AccountPage struct {
@@ -26,8 +26,6 @@ func NewAccountPage(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *Account
 }
 
 func (page *AccountPage) init() {
-	pwd, _ := os.Getwd()
-
 	vboxLayout := widgets.NewQVBoxLayout2(page)
 
 	loginLabel := widgets.NewQLabel2("登陆", page, 0)
@@ -36,8 +34,8 @@ func (page *AccountPage) init() {
 	page.tipsLabel.SetFixedWidth(200)
 	page.tipsLabel.SetAlignment(core.Qt__AlignCenter)
 
-	page.username = widgets2.NewLineEdit(pwd+"/resources/username.svg", page)
-	page.password = widgets2.NewLineEdit(pwd+"/resources/password.svg", page)
+	page.username = widgets2.NewLineEdit(":/resources/username.svg", page)
+	page.password = widgets2.NewLineEdit(":/resources/password.svg", page)
 	page.password.SetEchoMode(widgets.QLineEdit__Password)
 
 	vboxLayout.AddStretch(1)

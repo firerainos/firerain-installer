@@ -2,10 +2,10 @@ package page
 
 import (
 	"github.com/firerainos/firerain-installer/config"
+	_ "github.com/firerainos/firerain-installer/resources"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
-	"os"
 )
 
 type SelectDEPage struct {
@@ -40,12 +40,10 @@ func (s *SelectDEPage) init() {
 	s.deListWidget.SetIconSize(core.NewQSize2(180, 180))
 	s.deListWidget.SetSpacing(40)
 
-	path, _ := os.Getwd()
-
-	widgets.NewQListWidgetItem3(gui.NewQIcon5(path+"/resources/de-logo/kde.png"), "KDE", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
-	widgets.NewQListWidgetItem3(gui.NewQIcon5(path+"/resources/de-logo/dde.png"), "DDE", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
-	widgets.NewQListWidgetItem3(gui.NewQIcon5(path+"/resources/de-logo/cinnamon.png"), "Cinnamon", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
-	widgets.NewQListWidgetItem3(gui.NewQIcon5(path+"/resources/de-logo/gnome.png"), "GNOME", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
+	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/kde.png"), "KDE", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
+	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/dde.png"), "DDE", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
+	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/cinnamon.png"), "Cinnamon", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
+	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/gnome.png"), "GNOME", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
 
 	vboxLayout.AddWidget(welcomeLabel, 0, core.Qt__AlignCenter)
 	vboxLayout.AddWidget(s.deListWidget, 0, core.Qt__AlignCenter)
