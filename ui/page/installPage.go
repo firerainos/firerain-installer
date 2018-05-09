@@ -44,3 +44,11 @@ func (i *InstallPage) init() {
 
 	i.SetLayout(vboxLayout)
 }
+
+func (i *InstallPage) SetTips(tips string) {
+	i.tipsLabel.SetText(tips)
+}
+
+func (i *InstallPage) AddMessage(message string) {
+	i.messageText.Append(message)
+}
