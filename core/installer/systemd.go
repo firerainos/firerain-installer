@@ -25,6 +25,8 @@ func EnableServices() error {
 			err = EnableService("teamviewerd")
 		case "bumblebee":
 			err = EnableService("bumblebeed")
+		case "firerain-fristboot":
+			err = EnableService("firerain-fristboot")
 		case "tlp":
 			if err = EnableService("tlp");err!=nil {
 				break
@@ -42,5 +44,4 @@ func EnableServices() error {
 func EnableService(service string) error {
 	cmd := exec.Command("systemctl", "enable", service)
 	return cmd.Run()
-
 }
