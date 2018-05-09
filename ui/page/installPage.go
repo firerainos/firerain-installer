@@ -49,6 +49,10 @@ func (i *InstallPage) SetTips(tips string) {
 	i.tipsLabel.SetText(tips)
 }
 
+func (i *InstallPage) SetMessageVisible() {
+	i.messageText.SetVisible(false)
+}
+
 func (i *InstallPage) AddMessage(message string) {
 	i.messageText.Append(message)
 }
