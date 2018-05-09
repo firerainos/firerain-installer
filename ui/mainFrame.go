@@ -3,11 +3,11 @@ package ui
 import (
 	"github.com/firerainos/firerain-installer/api"
 	"github.com/firerainos/firerain-installer/config"
+	"github.com/firerainos/firerain-installer/styles"
 	"github.com/firerainos/firerain-installer/ui/page"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"strings"
-	"github.com/firerainos/firerain-installer/styles"
 )
 
 type MainFrame struct {
@@ -20,6 +20,7 @@ type MainFrame struct {
 	selectDEPage           *page.SelectDEPage
 	additionalSoftwarePage *page.AdditionalSoftwarePage
 	installPage            *page.InstallPage
+	endPage                *page.EndPage
 
 	backButton, nextButton *widgets.QPushButton
 
@@ -50,6 +51,7 @@ func (m *MainFrame) init() {
 	m.selectDEPage = page.NewSelectDEPage(m, 0)
 	m.additionalSoftwarePage = page.NewAdditionalSoftwarePage(m.account, m, 0)
 	m.installPage = page.NewInstallPage(m, 0)
+	m.endPage = page.NewEndPage(m, 0)
 
 	m.backButton = widgets.NewQPushButton2("返回", m)
 	m.nextButton = widgets.NewQPushButton2("继续", m)
@@ -77,6 +79,7 @@ func (m *MainFrame) init() {
 	m.stackLayout.AddWidget(m.selectDEPage)
 	m.stackLayout.AddWidget(m.additionalSoftwarePage)
 	m.stackLayout.AddWidget(m.installPage)
+	m.stackLayout.AddWidget(m.endPage)
 
 	vboxLayout.AddLayout(m.stackLayout, 1)
 	vboxLayout.AddLayout(hboxLayout, 1)
@@ -89,10 +92,10 @@ func (m *MainFrame) initConnect() {
 	m.stackLayout.ConnectCurrentChanged(func(index int) {
 		if index == 0 {
 			m.backButton.SetVisible(false)
-		} else if index == m.stackLayout.Count()-1 {
+		} else if index == m.stackLayout.Count()-2 {
 			m.nextButton.SetVisible(false)
 			m.backButton.SetVisible(false)
-		} else if index > 0 {
+		} else if index > 0 && index < 7 {
 			m.backButton.SetVisible(true)
 		}
 	})
@@ -133,6 +136,10 @@ func (m *MainFrame) initConnect() {
 			}
 		case 4:
 			m.additionalSoftwarePage.LoadInstallList()
+		case 5:
+
+		case 7:
+
 		}
 		m.stackLayout.SetCurrentIndex(index + 1)
 	})
