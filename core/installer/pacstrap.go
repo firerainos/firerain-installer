@@ -1,22 +1,36 @@
 package installer
 
 import (
-	"os"
+	"os/exec"
+	"github.com/firerainos/firerain-installer/config"
+	"github.com/kr/pty"
+	"bufio"
 )
 
-func Pacstrap() error {
-	createDir()
-	BindMnt()
+func Pacstrap(out chan string) error {
+	return installPkg(out,"-r","/mnt","--cachedir=/mnt/var/cache/pacman/pkg")
 }
 
-func createDir() {
-	os.MkdirAll("/mnt/var/cache/pacman/pkg",os.FileMode(0755))
-	os.MkdirAll("/mnt/var/lib/pacman",os.FileMode(0755))
-	os.MkdirAll("/mnt/var/log",os.FileMode(0755))
-	os.MkdirAll("/mnt/dev",os.FileMode(0755))
-	os.MkdirAll("/mnt/run",os.FileMode(0755))
-	os.MkdirAll("/mnt/etc",os.FileMode(0755))
-	os.MkdirAll("/mnt/tmp",os.FileMode(1777))
-	os.MkdirAll("/mnt/sys",os.FileMode(0555))
-	os.MkdirAll("/mnt/proc",os.FileMode(1777))
+func installPkg (out chan string,arg ...string) error {
+	cmdArg := append([]string{"-S","--noconfirm","--force"},arg...)
+	cmdArg = append(cmdArg,config.Conf.PkgList...)
+	cmd := exec.Command("pacman",arg...)
+	pacman,err := pty.Start(cmd)
+	if err != nil {
+		return err
+	}
+	defer pacman.Close()
+
+	reader := bufio.NewReader(pacman)
+
+	for {
+		line, _, err := reader.ReadLine()
+		if err != nil {
+			break
+		}
+
+		out <- string(line)
+	}
+
+	return nil
 }
