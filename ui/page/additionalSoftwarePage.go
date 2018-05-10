@@ -52,8 +52,11 @@ func (a *AdditionalSoftwarePage) init() {
 	buttonLayout := widgets.NewQVBoxLayout2(a)
 	buttonLayout.SetSpacing(16)
 
-	a.leftButton = widgets.NewQPushButton2("<", a)
-	a.rightButton = widgets.NewQPushButton2(">", a)
+	a.leftButton = widgets.NewQPushButton(a)
+	a.rightButton = widgets.NewQPushButton(a)
+
+	a.leftButton.SetIcon(widgets.QApplication_Style().StandardIcon(widgets.QStyle__SP_ArrowLeft,nil,nil))
+	a.rightButton.SetIcon(widgets.QApplication_Style().StandardIcon(widgets.QStyle__SP_ArrowRight,nil,nil))
 
 	a.leftButton.SetFixedSize2(32, 32)
 	a.rightButton.SetFixedSize2(32, 32)
