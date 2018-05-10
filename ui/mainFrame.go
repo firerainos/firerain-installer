@@ -9,6 +9,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"strings"
 	"os/exec"
+	"github.com/firerainos/firerain-installer/core/installer"
 )
 
 type MainFrame struct {
@@ -146,7 +147,7 @@ func (m *MainFrame) initConnect() {
 		case 4:
 			m.additionalSoftwarePage.LoadInstallList()
 		case 5:
-
+			go m.install()
 		case 7:
 
 		}
@@ -162,5 +163,38 @@ func (m *MainFrame) checkNetwork() {
 		m.stackLayout.SetCurrentIndex(2)
 	}
 	m.backButton.SetVisible(true)
+	m.nextButton.SetVisible(true)
+}
+
+func (m *MainFrame) install() {
+	message := make(chan string)
+
+	go func() {
+		for {
+			msg := <-message
+			if msg == "" {
+				break
+			}
+			if strings.HasPrefix(msg, "message:") {
+				m.installPage.SetTips(strings.Split(msg, ":")[1])
+			} else if strings.HasPrefix(msg, "action:") {
+				if strings.HasSuffix(msg, "closeMessage") {
+					m.installPage.SetMessageVisible()
+				}
+			} else {
+				m.installPage.AddMessage(msg)
+			}
+		}
+	}()
+
+	err := installer.Install(message)
+	if err != nil {
+		m.endPage.SetTips("安装失败\n错误:"+err.Error())
+	}
+
+	close(message)
+
+	m.stackLayout.SetCurrentIndex(7)
+	m.nextButton.SetText("重启")
 	m.nextButton.SetVisible(true)
 }
