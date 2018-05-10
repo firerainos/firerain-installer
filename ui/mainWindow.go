@@ -3,6 +3,7 @@ package ui
 import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"os/exec"
 )
 
 type MainWindow struct {
@@ -14,6 +15,7 @@ func NewMainWindow() *MainWindow {
 
 	m := &MainWindow{w}
 	m.init()
+	m.initMenu()
 
 	return m
 }
@@ -24,4 +26,20 @@ func (m *MainWindow) init() {
 
 	frame := NewMainFrame(m, 0)
 	m.SetCentralWidget(frame)
+}
+
+
+func (m *MainWindow) initMenu() {
+	toolMenu := m.MenuBar().AddMenu2("&工具")
+
+	pmAction := toolMenu.AddAction("分区管理器")
+	terminalAction :=toolMenu.AddAction("终端")
+
+	pmAction.ConnectTriggered(func(checked bool) {
+		exec.Command("/usr/bin/partitionmanager").Start()
+	})
+
+	terminalAction.ConnectTriggered(func(checked bool) {
+		exec.Command("/usr/bin/konsole").Start()
+	})
 }
