@@ -34,7 +34,7 @@ func (p *PartitionPage) init() {
 	p.tipLabel = widgets.NewQLabel2("请选择安装磁盘", p, 0)
 	p.partitionList = widgets2.NewPartitionList(p)
 
-	logoLabel.SetPixmap(gui.NewQPixmap5("/home/linux/go/src/github.com/firerainos/firerain-installer/resources/logo.png", "", 0).Scaled2(200, 200, core.Qt__KeepAspectRatioByExpanding, 0))
+	logoLabel.SetPixmap(gui.NewQPixmap5(":/resources/logo.png", "", 0).Scaled2(200, 200, core.Qt__KeepAspectRatioByExpanding, 0))
 	logoLabel.SetFixedSize2(200, 200)
 
 	vboxLayout.AddWidget(logoLabel, 0, core.Qt__AlignCenter)
