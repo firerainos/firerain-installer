@@ -10,9 +10,11 @@ import (
 func main() {
 	config.InitConfig()
 
-	widgets.NewQApplication(len(os.Args), os.Args)
+	app := widgets.NewQApplication(len(os.Args), os.Args)
+	app.SetApplicationVersion("0.0.1")
+	app.SetApplicationName("FireRain安装器")
 
 	ui.NewMainWindow().Show()
 
-	widgets.QApplication_Exec()
+	os.Exit(app.Exec())
 }
