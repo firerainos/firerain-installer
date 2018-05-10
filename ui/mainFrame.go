@@ -10,6 +10,7 @@ import (
 	"strings"
 	"os/exec"
 	"github.com/firerainos/firerain-installer/core/installer"
+	"github.com/therecipe/qt/multimedia"
 )
 
 type MainFrame struct {
@@ -29,12 +30,15 @@ type MainFrame struct {
 	stackLayout *widgets.QStackedLayout
 
 	account *api.Account
+
+	mediaPlayer *multimedia.QMediaPlayer
 }
 
 func NewMainFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *MainFrame {
 	frame := &MainFrame{QFrame: widgets.NewQFrame(parent, fo), account: api.NewAccount()}
 
 	frame.init()
+	frame.initPlayer()
 	frame.initConnect()
 
 	return frame
@@ -89,6 +93,15 @@ func (m *MainFrame) init() {
 
 	m.SetLayout(vboxLayout)
 }
+
+func (m *MainFrame) initPlayer() {
+	m.mediaPlayer = multimedia.NewQMediaPlayer(m,0)
+	playList:=multimedia.NewQMediaPlaylist(m)
+	playList.AddMedia(multimedia.NewQMediaContent2(core.NewQUrl3("qrc:/resources/background.mp3",core.QUrl__TolerantMode)))
+	playList.SetPlaybackMode(multimedia.QMediaPlaylist__CurrentItemInLoop)
+	m.mediaPlayer.SetPlaylist(playList)
+}
+
 
 func (m *MainFrame) initConnect() {
 	m.stackLayout.ConnectCurrentChanged(func(index int) {
@@ -147,6 +160,7 @@ func (m *MainFrame) initConnect() {
 		case 4:
 			m.additionalSoftwarePage.LoadInstallList()
 		case 5:
+			m.mediaPlayer.Play()
 			go m.install()
 		case 7:
 			m.reboot()
