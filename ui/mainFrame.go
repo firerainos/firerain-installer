@@ -8,6 +8,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"strings"
+	"os/exec"
 )
 
 type MainFrame struct {
@@ -92,11 +93,15 @@ func (m *MainFrame) initConnect() {
 	m.stackLayout.ConnectCurrentChanged(func(index int) {
 		if index == 0 {
 			m.backButton.SetVisible(false)
-		} else if index == m.stackLayout.Count()-2 {
+		} else if index == m.stackLayout.Count()-2 || index == 1 {
 			m.nextButton.SetVisible(false)
 			m.backButton.SetVisible(false)
 		} else if index > 0 && index < 7 {
 			m.backButton.SetVisible(true)
+		}
+
+		if index == 1 {
+			go m.checkNetwork()
 		}
 	})
 
@@ -107,6 +112,10 @@ func (m *MainFrame) initConnect() {
 	m.nextButton.ConnectClicked(func(checked bool) {
 		index := m.stackLayout.CurrentIndex()
 		switch index {
+		case 1:
+			m.networkPage.SetTips("正在检查网络...")
+			go m.checkNetwork()
+			return
 		case 2:
 			if config.Conf.Username == "" || config.Conf.Password == "" {
 				m.accountPage.SetTips("请输入用户名或密码")
@@ -143,4 +152,15 @@ func (m *MainFrame) initConnect() {
 		}
 		m.stackLayout.SetCurrentIndex(index + 1)
 	})
+}
+
+func (m *MainFrame) checkNetwork() {
+	cmd:=exec.Command("ping","-c","3","www.baidu.com")
+	if err:=cmd.Run();err!=nil{
+		m.networkPage.ConnectNetwork()
+	}else{
+		m.stackLayout.SetCurrentIndex(2)
+	}
+	m.backButton.SetVisible(true)
+	m.nextButton.SetVisible(true)
 }
