@@ -6,6 +6,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"strconv"
 	"strings"
+	"github.com/therecipe/qt/gui"
 )
 
 type PartitionListItem struct {
@@ -42,6 +43,7 @@ func (p *PartitionListItem) init() {
 	sizeLabel := widgets.NewQLabel2("总共 "+p.partition.Size, p, 0)
 
 	p.iconLabel.SetFixedSize2(120, 120)
+	p.iconLabel.SetPixmap(gui.NewQPixmap5(":/resources/harddisk.svg", "", 0).Scaled2(120, 120, core.Qt__KeepAspectRatioByExpanding, 0))
 
 	vboxLayout.AddSpacing(20)
 	vboxLayout.AddWidget(p.iconLabel, 0, core.Qt__AlignHCenter)
