@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"github.com/therecipe/qt/gui"
+	"github.com/firerainos/firerain-installer/styles"
 )
 
 type PartitionListItem struct {
@@ -29,6 +30,7 @@ func NewPartitionListItem(partition parted.Partition, parent widgets.QWidget_ITF
 func (p *PartitionListItem) init() {
 	p.SetFixedSize2(180, 200)
 	p.SetCheckable(true)
+	p.SetStyleSheet(styles.PartitionListItem)
 
 	vboxLayout := widgets.NewQVBoxLayout2(p)
 
@@ -45,8 +47,9 @@ func (p *PartitionListItem) init() {
 	p.iconLabel.SetFixedSize2(120, 120)
 	p.iconLabel.SetPixmap(gui.NewQPixmap5(":/resources/harddisk.svg", "", 0).Scaled2(120, 120, core.Qt__KeepAspectRatioByExpanding, 0))
 
-	vboxLayout.AddSpacing(20)
+	vboxLayout.AddSpacing(10)
 	vboxLayout.AddWidget(p.iconLabel, 0, core.Qt__AlignHCenter)
+	vboxLayout.AddSpacing(10)
 	vboxLayout.AddWidget(nameLabel, 0, core.Qt__AlignHCenter)
 	vboxLayout.AddWidget(sizeLabel, 0, core.Qt__AlignHCenter)
 	vboxLayout.AddStretch(1)

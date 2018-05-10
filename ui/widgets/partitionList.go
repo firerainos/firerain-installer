@@ -6,6 +6,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"github.com/firerainos/firerain-installer/config"
 	"strconv"
+	"github.com/firerainos/firerain-installer/styles"
 )
 
 type PartitionList struct {
@@ -28,6 +29,7 @@ func (p *PartitionList) init() {
 	p.SetMinimumSize2(500, 290)
 	p.SetWidgetResizable(true)
 	p.SetVerticalScrollBarPolicy(core.Qt__ScrollBarAlwaysOff)
+	p.SetStyleSheet(styles.PartitionList)
 
 	frame := widgets.NewQFrame(p, 0)
 
