@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource prefix="/resources">
+        <file>background.mp3</file>
         <file>backButton.png</file>
         <file>backButtonFocus.png</file>
         <file>backButtonFocusPressed.png</file>
