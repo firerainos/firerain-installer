@@ -149,7 +149,7 @@ func (m *MainFrame) initConnect() {
 		case 5:
 			go m.install()
 		case 7:
-
+			m.reboot()
 		}
 		m.stackLayout.SetCurrentIndex(index + 1)
 	})
@@ -197,4 +197,8 @@ func (m *MainFrame) install() {
 	m.stackLayout.SetCurrentIndex(7)
 	m.nextButton.SetText("重启")
 	m.nextButton.SetVisible(true)
+}
+
+func (m *MainFrame) reboot() {
+	exec.Command("reboot").Run()
 }
