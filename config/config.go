@@ -19,6 +19,7 @@ func InitConfig() {
 	Conf.AddPackage("vim")
 	Conf.AddPackage("sudo")
 	Conf.AddPackage("networkmanager")
+	Conf.AddPackage("firerain-fristboot")
 	if _,err:=os.Stat("/sys/firmware/efi/efivars");err!=nil{
 		if os.IsNotExist(err) {
 			Conf.IsUEFI = false
