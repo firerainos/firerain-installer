@@ -21,6 +21,9 @@ func InitConfig() {
 	Conf.AddPackage("sudo")
 	Conf.AddPackage("networkmanager")
 	Conf.AddPackage("firerain-fristboot")
+
+	Conf.DEApplication="kde-applications"
+
 	if _,err:=os.Stat("/sys/firmware/efi/efivars");err!=nil{
 		if os.IsNotExist(err) {
 			Conf.IsUEFI = false
