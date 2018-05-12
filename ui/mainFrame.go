@@ -149,6 +149,9 @@ func (m *MainFrame) initConnect() {
 				m.accountPage.SetEnableLogin(true)
 				return
 			}
+			m.accountPage.SetTips("加载数据中...")
+			m.accountPage.Repaint()
+			installer.SyncDatabase()
 			m.additionalSoftwarePage.LoadData()
 
 			m.accountPage.SetEnableLogin(true)
