@@ -34,3 +34,8 @@ func installPkg (out chan string,arg ...string) error {
 
 	return nil
 }
+
+func SyncDatabase() error {
+	cmd := exec.Command("pacman","-Syy")
+	return cmd.Run()
+}
