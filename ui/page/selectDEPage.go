@@ -58,12 +58,16 @@ func (s *SelectDEPage) initConnect() {
 		}
 		switch currentText {
 		case "KDE":
+			config.Conf.DEApplication = "kde-applications"
 			s.deName = []string{"plasma-meta", "sddm", "dolphin", "konsole", "kate"}
 		case "DDE":
+			config.Conf.DEApplication = "deepin-extra"
 			s.deName = []string{"deepin", "lightdm"}
 		case "Cinnamon":
+			config.Conf.DEApplication = "gnome-extra"
 			s.deName = []string{"cinnamon", "cinnamon-translations", "lightdm", "lightdm-gtk-greeter"}
 		case "GNOME":
+			config.Conf.DEApplication = "gnome-extra"
 			s.deName = []string{"gnome", "lightdm", "lightdm-gtk-greeter"}
 		}
 		for _, pkg := range s.deName {

@@ -7,6 +7,7 @@ var Conf *Config
 type Config struct {
 	*Account
 	*Package
+	DEApplication string
 	InstallDev string
 	IsUEFI bool
 	EFIDev string
