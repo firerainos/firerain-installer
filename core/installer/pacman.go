@@ -5,6 +5,8 @@ import (
 	"github.com/firerainos/firerain-installer/config"
 	"github.com/kr/pty"
 	"bufio"
+	"strings"
+	"github.com/firerainos/firerain-installer/api"
 )
 
 func Pacstrap(out chan string) error {
@@ -38,4 +40,44 @@ func installPkg (out chan string,arg ...string) error {
 func SyncDatabase() error {
 	cmd := exec.Command("pacman","-Syy")
 	return cmd.Run()
+}
+
+func GetGroupPkgInfo(group string) []api.Package {
+	cmd := exec.Command("pacman","-Sg",group)
+	out,err:=cmd.CombinedOutput()
+	if err != nil {
+		return nil
+	}
+
+	lines := strings.Split(string(out),"\n")
+	pkgs := make([]api.Package,len(lines))
+
+	for i,line:= range lines {
+		if line=="" {
+			continue
+		}
+		name := strings.Split(line," ")[1]
+		pkg := api.Package{Name:name,Description:GetPkgDescription(name)}
+		pkgs[i] = pkg
+	}
+
+	return pkgs
+}
+
+func GetPkgDescription(pkgName string) string {
+	cmd := exec.Command("pacman","-Si",pkgName)
+	cmd.Env = append(cmd.Env, "LANG=C")
+	out,err:=cmd.CombinedOutput()
+	if err != nil {
+		return ""
+	}
+
+	lines := strings.Split(string(out),"\n")
+	for _,line := range lines {
+		if strings.Contains(line,"Description") {
+			return strings.TrimSpace(strings.Split(line,":")[1])
+		}
+	}
+
+	return ""
 }
