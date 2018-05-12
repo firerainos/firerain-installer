@@ -46,7 +46,7 @@ func (a *AdditionalSoftwarePage) init() {
 	a.installList = widgets.NewQListView(a)
 
 	a.itemList.SetFixedSize2(150, 500)
-	a.packageList.SetFixedSize2(430, 500)
+	a.packageList.SetFixedSize2(530, 500)
 	a.installList.SetFixedSize2(250, 500)
 
 	buttonLayout := widgets.NewQVBoxLayout2(a)

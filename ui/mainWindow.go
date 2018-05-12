@@ -22,7 +22,7 @@ func NewMainWindow() *MainWindow {
 
 func (m *MainWindow) init() {
 	m.SetWindowTitle("firerain-installer")
-	m.SetFixedSize(core.NewQSize2(900, 700))
+	m.SetFixedSize(core.NewQSize2(1000, 700))
 
 	frame := NewMainFrame(m, 0)
 	m.SetCentralWidget(frame)

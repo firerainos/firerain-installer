@@ -29,9 +29,9 @@ func NewHelloWidget(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *HelloWi
 
 func (helloWidget *HelloWidget) init() {
 	helloWidget.helloStr = []string{"Olá", "Здравствуйте", "Salve", "여보세요", "Hallo", "ສະບາຍດີ", "你好", "Hello", "xin chào", "Halo", "saluton", "سلام", "Bonjour", "Kamusta"}
-	helloWidget.x = []int{100, 600, 200, 600, 350, 350, 420, 420, 380, 480, 750, 300, 250, 680}
+	helloWidget.x = []int{100, 600, 200, 600, 350, 350, 470, 470, 380, 480, 750, 300, 250, 700}
 
-	helloWidget.SetFixedSize2(900, len(helloWidget.helloStr)*30+50)
+	helloWidget.SetFixedSize2(1000, len(helloWidget.helloStr)*30+50)
 
 	helloWidget.ConnectPaintEvent(helloWidget.paintEvent)
 }
@@ -43,7 +43,7 @@ func (helloWidget *HelloWidget) Start() {
 func (helloWidget *HelloWidget) roller() {
 	for i := 0; i < len(helloWidget.helloStr); i++ {
 		if helloWidget.x[i] < -200 {
-			helloWidget.x[i] = 900
+			helloWidget.x[i] = 1000
 		} else {
 			helloWidget.x[i] -= 5
 		}
