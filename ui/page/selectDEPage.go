@@ -45,6 +45,8 @@ func (s *SelectDEPage) init() {
 	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/cinnamon.png"), "Cinnamon", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
 	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/gnome.png"), "GNOME", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
 
+	s.deListWidget.SetCurrentRow(0)
+
 	vboxLayout.AddWidget(welcomeLabel, 0, core.Qt__AlignCenter)
 	vboxLayout.AddWidget(s.deListWidget, 0, core.Qt__AlignCenter)
 
@@ -74,4 +76,6 @@ func (s *SelectDEPage) initConnect() {
 			config.Conf.AddPackage(pkg)
 		}
 	})
+
+	s.deListWidget.CurrentTextChanged("KDE")
 }
