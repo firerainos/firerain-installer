@@ -16,7 +16,7 @@ type WifiListItem struct {
 
 	signalLabel, ssidLabel, securityLabel *widgets.QLabel
 
-	_ func() `constructor:"init()"`
+	_ func() `constructor:"init"`
 
 	_ func(ssid, security string, inUse bool) `signal:"wifiListItemClicked"`
 }
