@@ -6,6 +6,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
+	"github.com/firerainos/firerain-installer/styles"
 )
 
 type SelectDEPage struct {
@@ -37,8 +38,9 @@ func (s *SelectDEPage) init() {
 	s.deListWidget.SetFlow(widgets.QListView__LeftToRight)
 	s.deListWidget.SetMovement(widgets.QListView__Static)
 	s.deListWidget.SetVerticalScrollBarPolicy(core.Qt__ScrollBarAlwaysOff)
-	s.deListWidget.SetIconSize(core.NewQSize2(180, 180))
+	s.deListWidget.SetIconSize(core.NewQSize2(150, 150))
 	s.deListWidget.SetSpacing(40)
+	s.deListWidget.SetStyleSheet(styles.DEList)
 
 	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/kde.png"), "KDE", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
 	widgets.NewQListWidgetItem3(gui.NewQIcon5(":/resources/de-logo/dde.png"), "DDE", s.deListWidget, 0).SetSizeHint(core.NewQSize2(200, 200))
