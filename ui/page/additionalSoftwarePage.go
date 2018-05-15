@@ -8,6 +8,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"log"
 	"strings"
+	"github.com/firerainos/firerain-installer/core/installer"
 )
 
 type AdditionalSoftwarePage struct {
@@ -19,7 +20,7 @@ type AdditionalSoftwarePage struct {
 
 	account *api.Account
 
-	packageModel []*gui.QStandardItemModel
+	packageModel map[string]*gui.QStandardItemModel
 	installModel *core.QStringListModel
 }
 
@@ -86,7 +87,7 @@ func (a *AdditionalSoftwarePage) init() {
 func (a *AdditionalSoftwarePage) initConnect() {
 	a.itemList.ConnectCurrentChanged(func(current *core.QModelIndex, previous *core.QModelIndex) {
 		if len(a.packageModel) != 0 {
-			a.packageList.SetModel(a.packageModel[current.Row()])
+			a.packageList.SetModel(a.packageModel[current.Data(int(core.Qt__DisplayRole)).ToString()])
 		}
 	})
 
@@ -125,14 +126,27 @@ func (a *AdditionalSoftwarePage) initConnect() {
 }
 
 func (a *AdditionalSoftwarePage) LoadData() {
-	if len(a.packageModel) !=0 {
-		a.packageModel = make([]*gui.QStandardItemModel,0)
+	if a.itemList.Count() != 0 {
 		a.itemList.Clear()
 	}
+
+	a.itemList.AddItem(config.Conf.DEApplication)
 
 	items, err := a.account.GetItem()
 	if err != nil {
 		log.Println(err)
+	}
+	a.packageModel = make(map[string]*gui.QStandardItemModel,len(items)+3)
+
+	for _,group := range []string{"kde-applications","deepin-extra","gnome-extra"} {
+		pkgs := installer.GetGroupPkgInfo(group)
+		model := gui.NewQStandardItemModel(a)
+		for _, pkg := range pkgs {
+			item := gui.NewQStandardItem2(pkg.Name + "\n" + pkg.Description)
+			item.SetEditable(false)
+			model.AppendRow2(item)
+		}
+		a.packageModel[group] = model
 	}
 
 	for _, item := range items {
@@ -143,15 +157,18 @@ func (a *AdditionalSoftwarePage) LoadData() {
 			item.SetEditable(false)
 			model.AppendRow2(item)
 		}
-		a.packageModel = append(a.packageModel, model)
+		a.packageModel[item.Title]=model
 	}
 
 	a.itemList.SetCurrentRow(0)
-
-	a.packageList.SetModel(a.packageModel[0])
 }
 
 func (a *AdditionalSoftwarePage) LoadInstallList() {
+	a.itemList.Item(0).SetText(config.Conf.DEApplication)
+	if a.itemList.CurrentRow() == 0 {
+		a.packageList.SetModel(a.packageModel[config.Conf.DEApplication])
+	}
+
 	a.installModel = core.NewQStringListModel2(config.Conf.PkgList, a)
 	a.installList.SetEditTriggers(widgets.QAbstractItemView__NoEditTriggers)
 	a.installList.SetModel(a.installModel)
