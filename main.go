@@ -11,7 +11,7 @@ func main() {
 	config.InitConfig()
 
 	app := widgets.NewQApplication(len(os.Args), os.Args)
-	app.SetApplicationVersion("0.0.1")
+	app.SetApplicationVersion("0.1.0")
 	app.SetApplicationName("FireRain安装器")
 
 	ui.NewMainWindow().Show()
