@@ -41,7 +41,9 @@ func ScanDevice() ([]Device, error) {
 		for i, item := range items {
 			if i == 0 {
 				tmp := strings.Split(item, ":")
-
+				if len(tmp) < 7 {
+					continue
+				}
 				device = Device{tmp[6], tmp[5], tmp[0], tmp[1], nil}
 			} else {
 				tmps := strings.Split(item, ":")
