@@ -136,6 +136,7 @@ func (m *MainFrame) initConnect() {
 				return
 			}
 
+			m.setButtonVisible(false)
 			m.accountPage.SetEnableLogin(false)
 			m.accountPage.SetTips("登陆中...")
 			m.accountPage.Repaint()
@@ -146,6 +147,7 @@ func (m *MainFrame) initConnect() {
 				} else {
 					m.accountPage.SetTips("登陆失败")
 				}
+				m.setButtonVisible(true)
 				m.accountPage.SetEnableLogin(true)
 				return
 			}
@@ -179,8 +181,7 @@ func (m *MainFrame) checkNetwork() {
 	}else{
 		m.stackLayout.SetCurrentIndex(2)
 	}
-	m.backButton.SetVisible(true)
-	m.nextButton.SetVisible(true)
+	m.setButtonVisible(true)
 }
 
 func (m *MainFrame) install() {
@@ -215,6 +216,12 @@ func (m *MainFrame) install() {
 	m.nextButton.SetText("重启")
 	m.nextButton.SetVisible(true)
 }
+
+func (m *MainFrame) setButtonVisible(enable bool) {
+	m.backButton.SetVisible(enable)
+	m.nextButton.SetVisible(enable)
+}
+
 
 func (m *MainFrame) reboot() {
 	exec.Command("reboot").Run()

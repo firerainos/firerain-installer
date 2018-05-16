@@ -38,8 +38,12 @@ func (page *AccountPage) init() {
 	page.password = widgets2.NewLineEdit(":/resources/password.svg", page)
 	page.password.SetEchoMode(widgets.QLineEdit__Password)
 
+	page.username.SetPlaceholderText("用户名")
+	page.password.SetPlaceholderText("密码")
+
 	vboxLayout.AddStretch(1)
 	vboxLayout.AddWidget(loginLabel, 0, core.Qt__AlignCenter)
+	vboxLayout.AddSpacing(20)
 	vboxLayout.AddWidget(page.tipsLabel, 0, core.Qt__AlignCenter)
 	vboxLayout.AddSpacing(100)
 	vboxLayout.AddWidget(page.username, 0, core.Qt__AlignHCenter)
@@ -62,7 +66,7 @@ func  (page *AccountPage) SetTips(tips string) {
 }
 
 func  (page *AccountPage) SetEnableLogin(enable bool) {
-	page.username.SetEnabled(enable)
-	page.password.SetEnabled(enable)
+	page.username.SetVisible(enable)
+	page.password.SetVisible(enable)
 }
 
