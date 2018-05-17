@@ -210,8 +210,6 @@ func (m *MainFrame) install() {
 		m.endPage.SetTips("安装失败\n错误:"+err.Error())
 	}
 
-	close(message)
-
 	m.stackLayout.SetCurrentIndex(7)
 	m.nextButton.SetText("重启")
 	m.nextButton.SetVisible(true)
