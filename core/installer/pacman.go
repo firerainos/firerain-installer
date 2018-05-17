@@ -50,17 +50,36 @@ func GetGroupPkgInfo(group string) []api.Package {
 	}
 
 	lines := strings.Split(string(out),"\n")
-	pkgs := make([]api.Package,len(lines))
+	pkgs := make([]api.Package,0)
 
-	for i,line:= range lines {
+	pkgInfo := make(chan api.Package)
+	done := make(chan bool)
+	defer close(pkgInfo)
+	defer close(done)
+
+	go func() {
+		for {
+			if len(pkgs) == len(lines)-1 {
+				done <- true
+				break
+			}
+			pkg := <- pkgInfo
+			pkgs = append(pkgs, pkg)
+		}
+	}()
+
+	for _,line:= range lines {
 		if line=="" {
 			continue
 		}
 		name := strings.Split(line," ")[1]
-		pkg := api.Package{Name:name,Description:GetPkgDescription(name)}
-		pkgs[i] = pkg
+
+		go func() {
+			pkgInfo <- api.Package{Name:name,Description:GetPkgDescription(name)}
+		}()
 	}
 
+	<- done
 	return pkgs
 }
 
