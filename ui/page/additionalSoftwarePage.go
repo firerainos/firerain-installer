@@ -148,11 +148,7 @@ func (a *AdditionalSoftwarePage) initConnect() {
 		a.leftButton.SetEnabled(false)
 	})
 
-	a.packageLine.ConnectKeyReleaseEvent(func(event *gui.QKeyEvent) {
-		if event.Key() == int(core.Qt__Key_Enter) {
-
-		}
-	})
+	a.packageLine.ConnectKeyReleaseEvent(a.packageLineKeyEvent)
 
 	a.leftButton.ConnectClicked(a.leftButtonClicked)
 	a.rightButton.ConnectClicked(a.rightButtonClicked)
@@ -219,5 +215,24 @@ func (a *AdditionalSoftwarePage) rightButtonClicked(checked bool) {
 	if str := a.packageList.CurrentIndex().Data(int(core.Qt__DisplayRole)).ToString(); str != "" {
 		config.Conf.AddPackage(strings.Split(str, "\n")[0])
 		a.installModel.SetStringList(config.Conf.PkgList)
+	}
+}
+
+func (a *AdditionalSoftwarePage) packageLineKeyEvent(event *gui.QKeyEvent) {
+	if event.Key() == int(core.Qt__Key_Enter) || event.Key() == int(core.Qt__Key_Return){
+		pkg := a.packageLine.Text()
+		if pkg == "" {
+			return
+		}
+
+		if installer.PkgIsExist(pkg) {
+			if !config.Conf.SearchPackage(pkg) {
+				config.Conf.AddPackage(pkg)
+				a.installModel.SetStringList(config.Conf.PkgList)
+			}
+			a.packageLine.SetText("")
+		} else {
+			widgets.NewQMessageBox2(widgets.QMessageBox__NoIcon,"提示",pkg+" 不存在",widgets.QMessageBox__Ok,a,0).Show()
+		}
 	}
 }
