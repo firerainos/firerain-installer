@@ -155,7 +155,7 @@ func (m *MainFrame) initConnect() {
 			m.accountPage.Repaint()
 			installer.SyncDatabase()
 			m.additionalSoftwarePage.LoadData()
-
+			m.nextButton.SetVisible(true)
 			m.accountPage.SetEnableLogin(true)
 			m.accountPage.SetTips("")
 		case 3:
