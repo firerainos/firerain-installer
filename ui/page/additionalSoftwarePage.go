@@ -3,12 +3,14 @@ package page
 import (
 	"github.com/firerainos/firerain-installer/api"
 	"github.com/firerainos/firerain-installer/config"
+	"github.com/firerainos/firerain-installer/core/installer"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
+	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 	"log"
 	"strings"
-	"github.com/firerainos/firerain-installer/core/installer"
+	"github.com/firerainos/firerain-installer/styles"
 )
 
 type AdditionalSoftwarePage struct {
@@ -17,6 +19,8 @@ type AdditionalSoftwarePage struct {
 	itemList                 *widgets.QListWidget
 	packageList, installList *widgets.QListView
 	leftButton, rightButton  *widgets.QPushButton
+
+	packageLine *widgets2.LineEdit
 
 	account *api.Account
 
@@ -45,10 +49,29 @@ func (a *AdditionalSoftwarePage) init() {
 	a.itemList = widgets.NewQListWidget(a)
 	a.packageList = widgets.NewQListView(a)
 	a.installList = widgets.NewQListView(a)
+	a.packageLine = widgets2.NewLineEdit(":/resources/package.svg",a)
+
+	a.itemList.SetStyleSheet(styles.ItemList)
+	a.packageList.SetStyleSheet(styles.PackageList)
+	a.installList.SetStyleSheet(styles.InstallList)
+
+	a.packageList.SetHorizontalScrollBarPolicy(core.Qt__ScrollBarAlwaysOff)
+
+	a.packageList.SetAlternatingRowColors(true)
+	a.installList.SetAlternatingRowColors(true)
+
+	a.packageLine.SetPlaceholderText("输入包名并回车以添加")
 
 	a.itemList.SetFixedSize2(150, 500)
 	a.packageList.SetFixedSize2(530, 500)
-	a.installList.SetFixedSize2(250, 500)
+	a.installList.SetFixedWidth(250)
+	a.packageLine.SetFixedWidth(250)
+
+	installLayout := widgets.NewQVBoxLayout2(a)
+
+	installLayout.AddWidget(a.packageLine,0,core.Qt__AlignHCenter)
+	installLayout.AddSpacing(5)
+	installLayout.AddWidget(a.installList,1,core.Qt__AlignHCenter)
 
 	buttonLayout := widgets.NewQVBoxLayout2(a)
 	buttonLayout.SetSpacing(16)
@@ -56,8 +79,8 @@ func (a *AdditionalSoftwarePage) init() {
 	a.leftButton = widgets.NewQPushButton(a)
 	a.rightButton = widgets.NewQPushButton(a)
 
-	a.leftButton.SetIcon(widgets.QApplication_Style().StandardIcon(widgets.QStyle__SP_ArrowLeft,nil,nil))
-	a.rightButton.SetIcon(widgets.QApplication_Style().StandardIcon(widgets.QStyle__SP_ArrowRight,nil,nil))
+	a.leftButton.SetIcon(widgets.QApplication_Style().StandardIcon(widgets.QStyle__SP_ArrowLeft, nil, nil))
+	a.rightButton.SetIcon(widgets.QApplication_Style().StandardIcon(widgets.QStyle__SP_ArrowRight, nil, nil))
 
 	a.leftButton.SetFixedSize2(32, 32)
 	a.rightButton.SetFixedSize2(32, 32)
@@ -73,9 +96,9 @@ func (a *AdditionalSoftwarePage) init() {
 	hboxLayout.AddWidget(a.itemList, 0, core.Qt__AlignLeft)
 	hboxLayout.AddWidget(a.packageList, 0, core.Qt__AlignLeft)
 	hboxLayout.AddLayout(buttonLayout, 0)
-	hboxLayout.AddWidget(a.installList, 0, core.Qt__AlignRight)
+	hboxLayout.AddLayout(installLayout,0)
 
-	vboxLayout.AddStretch(1)
+	vboxLayout.AddSpacing(30)
 	vboxLayout.AddWidget(welcomeLabel, 0, core.Qt__AlignCenter)
 	vboxLayout.AddSpacing(50)
 	vboxLayout.AddLayout(hboxLayout, 1)
@@ -86,8 +109,12 @@ func (a *AdditionalSoftwarePage) init() {
 
 func (a *AdditionalSoftwarePage) initConnect() {
 	a.itemList.ConnectCurrentChanged(func(current *core.QModelIndex, previous *core.QModelIndex) {
+		item := current.Data(int(core.Qt__DisplayRole)).ToString()
+		if item == "" {
+			return
+		}
 		if len(a.packageModel) != 0 {
-			a.packageList.SetModel(a.packageModel[current.Data(int(core.Qt__DisplayRole)).ToString()])
+			a.packageList.SetModel(a.packageModel[item])
 		}
 	})
 
@@ -121,6 +148,12 @@ func (a *AdditionalSoftwarePage) initConnect() {
 		a.leftButton.SetEnabled(false)
 	})
 
+	a.packageLine.ConnectKeyReleaseEvent(func(event *gui.QKeyEvent) {
+		if event.Key() == int(core.Qt__Key_Enter) {
+
+		}
+	})
+
 	a.leftButton.ConnectClicked(a.leftButtonClicked)
 	a.rightButton.ConnectClicked(a.rightButtonClicked)
 }
@@ -130,19 +163,20 @@ func (a *AdditionalSoftwarePage) LoadData() {
 		a.itemList.Clear()
 	}
 
-	a.itemList.AddItem(config.Conf.DEApplication)
+	widgets.NewQListWidgetItem2(config.Conf.DEApplication,a.itemList,0).SetTextAlignment(int(core.Qt__AlignCenter))
 
 	items, err := a.account.GetItem()
 	if err != nil {
 		log.Println(err)
 	}
-	a.packageModel = make(map[string]*gui.QStandardItemModel,len(items)+3)
+	a.packageModel = make(map[string]*gui.QStandardItemModel, len(items)+3)
 
-	for _,group := range []string{"kde-applications","deepin-extra","gnome-extra"} {
+	for _, group := range []string{"kde-applications", "deepin-extra", "gnome-extra"} {
 		pkgs := installer.GetGroupPkgInfo(group)
 		model := gui.NewQStandardItemModel(a)
 		for _, pkg := range pkgs {
 			item := gui.NewQStandardItem2(pkg.Name + "\n" + pkg.Description)
+			item.SetToolTip(pkg.Description)
 			item.SetEditable(false)
 			model.AppendRow2(item)
 		}
@@ -150,14 +184,14 @@ func (a *AdditionalSoftwarePage) LoadData() {
 	}
 
 	for _, item := range items {
-		a.itemList.AddItem(item.Title)
+		widgets.NewQListWidgetItem2(item.Title,a.itemList,0).SetTextAlignment(int(core.Qt__AlignCenter))
 		model := gui.NewQStandardItemModel(a)
 		for _, pkg := range item.Packages {
 			item := gui.NewQStandardItem2(pkg.Name + "\n" + pkg.Description)
 			item.SetEditable(false)
 			model.AppendRow2(item)
 		}
-		a.packageModel[item.Title]=model
+		a.packageModel[item.Title] = model
 	}
 
 	a.itemList.SetCurrentRow(0)
