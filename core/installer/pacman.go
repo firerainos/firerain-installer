@@ -100,3 +100,8 @@ func GetPkgDescription(pkgName string) string {
 
 	return ""
 }
+
+func PkgIsExist(pkgName string) bool {
+	cmd := exec.Command("pacman","-Si",pkgName)
+	return cmd.Run() == nil
+}
