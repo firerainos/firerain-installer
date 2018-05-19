@@ -1,10 +1,11 @@
 package main
 
 import (
+	"github.com/firerainos/firerain-installer/config"
 	"github.com/firerainos/firerain-installer/ui"
+	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"os"
-	"github.com/firerainos/firerain-installer/config"
 )
 
 func main() {
