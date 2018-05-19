@@ -12,12 +12,18 @@ func MountMnt() error {
 		return err
 	}
 
-	err = os.Mkdir("/mnt/boot",os.FileMode(0755))
-	if err != nil {
-		return err
+	if config.Conf.IsUEFI {
+		err = os.Mkdir("/mnt/boot", os.FileMode(0755))
+		if err != nil {
+			syscall.Unmount("/mnt",0)
+			return err
+		}
+		err = syscall.Mount(config.Conf.EFIDev, "/mnt/boot", "vfat", 0, "")
+		if err != nil {
+			return err
+		}
 	}
-
-	return syscall.Mount(config.Conf.EFIDev,"/mnt/boot","vfat",0,"")
+	return nil
 }
 
 func UnMountMnt() {
