@@ -7,15 +7,17 @@ import (
 )
 
 func MountMnt() error {
-	err := syscall.Mount(config.Conf.InstallDev, "/mnt", "", 0, "")
+	err := syscall.Mount(config.Conf.InstallDev, "/mnt", "btrfs", 0, "")
 	if err != nil {
 		return err
 	}
+
 	err = os.Mkdir("/mnt/boot",os.FileMode(0755))
 	if err != nil {
 		return err
 	}
-	return syscall.Mount(config.Conf.EFIDev,"/mnt/boot","",0,"")
+
+	return syscall.Mount(config.Conf.EFIDev,"/mnt/boot","vfat",0,"")
 }
 
 func UnMountMnt() {
