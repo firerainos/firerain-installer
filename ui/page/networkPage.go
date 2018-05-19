@@ -11,7 +11,7 @@ type NetworkPage struct {
 	*widgets.QFrame
 
 	tipsLabel *widgets.QLabel
-	wifiList *widgets.QListWidget
+	wifiList  *widgets.QListWidget
 
 	nm *networkmanager.NetworkManager
 
@@ -19,7 +19,7 @@ type NetworkPage struct {
 }
 
 func NewNetworkPage(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *NetworkPage {
-	page := &NetworkPage{QFrame: widgets.NewQFrame(parent, fo), nm: networkmanager.NewNetworkManager(),stopScan:true}
+	page := &NetworkPage{QFrame: widgets.NewQFrame(parent, fo), nm: networkmanager.NewNetworkManager(), stopScan: true}
 	page.init()
 
 	page.StartTimer(2000, core.Qt__PreciseTimer)
@@ -93,10 +93,10 @@ func (n *NetworkPage) ConnectNetwork() {
 		if !n.wifiList.IsVisible() {
 			n.stopScan = false
 			n.tipsLabel.SetText("请连接WIFI")
-		}else{
+		} else {
 			n.tipsLabel.SetText("请连接可用WIFI")
 		}
-	}else {
+	} else {
 		n.tipsLabel.SetText("请连接网络")
 	}
 	n.wifiList.SetVisible(true)

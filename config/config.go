@@ -8,13 +8,13 @@ type Config struct {
 	*Account
 	*Package
 	DEApplication string
-	InstallDev string
-	IsUEFI bool
-	EFIDev string
+	InstallDev    string
+	IsUEFI        bool
+	EFIDev        string
 }
 
 func InitConfig() {
-	Conf = &Config{Account: &Account{}, Package: &Package{},IsUEFI:true}
+	Conf = &Config{Account: &Account{}, Package: &Package{}, IsUEFI: true}
 	Conf.AddPackage("base")
 	Conf.AddPackage("base-devel")
 	Conf.AddPackage("vim")
@@ -22,9 +22,9 @@ func InitConfig() {
 	Conf.AddPackage("networkmanager")
 	Conf.AddPackage("firerain-fristboot")
 
-	Conf.DEApplication="kde-applications"
+	Conf.DEApplication = "kde-applications"
 
-	if _,err:=os.Stat("/sys/firmware/efi/efivars");err!=nil{
+	if _, err := os.Stat("/sys/firmware/efi/efivars"); err != nil {
 		if os.IsNotExist(err) {
 			Conf.IsUEFI = false
 		}

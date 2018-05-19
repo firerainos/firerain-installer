@@ -3,14 +3,14 @@ package ui
 import (
 	"github.com/firerainos/firerain-installer/api"
 	"github.com/firerainos/firerain-installer/config"
+	"github.com/firerainos/firerain-installer/core/installer"
 	"github.com/firerainos/firerain-installer/styles"
 	"github.com/firerainos/firerain-installer/ui/page"
 	"github.com/therecipe/qt/core"
-	"github.com/therecipe/qt/widgets"
-	"strings"
-	"os/exec"
-	"github.com/firerainos/firerain-installer/core/installer"
 	"github.com/therecipe/qt/multimedia"
+	"github.com/therecipe/qt/widgets"
+	"os/exec"
+	"strings"
 )
 
 type MainFrame struct {
@@ -95,13 +95,12 @@ func (m *MainFrame) init() {
 }
 
 func (m *MainFrame) initPlayer() {
-	m.mediaPlayer = multimedia.NewQMediaPlayer(m,0)
-	playList:=multimedia.NewQMediaPlaylist(m)
-	playList.AddMedia(multimedia.NewQMediaContent2(core.NewQUrl3("qrc:/resources/background.mp3",core.QUrl__TolerantMode)))
+	m.mediaPlayer = multimedia.NewQMediaPlayer(m, 0)
+	playList := multimedia.NewQMediaPlaylist(m)
+	playList.AddMedia(multimedia.NewQMediaContent2(core.NewQUrl3("qrc:/resources/background.mp3", core.QUrl__TolerantMode)))
 	playList.SetPlaybackMode(multimedia.QMediaPlaylist__CurrentItemInLoop)
 	m.mediaPlayer.SetPlaylist(playList)
 }
-
 
 func (m *MainFrame) initConnect() {
 	m.stackLayout.ConnectCurrentChanged(func(index int) {
@@ -175,10 +174,10 @@ func (m *MainFrame) initConnect() {
 }
 
 func (m *MainFrame) checkNetwork() {
-	cmd:=exec.Command("ping","-c","3","www.baidu.com")
-	if err:=cmd.Run();err!=nil{
+	cmd := exec.Command("ping", "-c", "3", "www.baidu.com")
+	if err := cmd.Run(); err != nil {
 		m.networkPage.ConnectNetwork()
-	}else{
+	} else {
 		m.stackLayout.SetCurrentIndex(2)
 	}
 	m.setButtonVisible(true)
@@ -207,7 +206,7 @@ func (m *MainFrame) install() {
 
 	err := installer.Install(message)
 	if err != nil {
-		m.endPage.SetTips("安装失败\n错误:"+err.Error())
+		m.endPage.SetTips("安装失败\n错误:" + err.Error())
 	}
 
 	m.stackLayout.SetCurrentIndex(7)
@@ -219,7 +218,6 @@ func (m *MainFrame) setButtonVisible(enable bool) {
 	m.backButton.SetVisible(enable)
 	m.nextButton.SetVisible(enable)
 }
-
 
 func (m *MainFrame) reboot() {
 	exec.Command("reboot").Run()

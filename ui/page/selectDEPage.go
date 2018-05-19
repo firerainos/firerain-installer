@@ -3,10 +3,10 @@ package page
 import (
 	"github.com/firerainos/firerain-installer/config"
 	_ "github.com/firerainos/firerain-installer/resources"
+	"github.com/firerainos/firerain-installer/styles"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
-	"github.com/firerainos/firerain-installer/styles"
 )
 
 type SelectDEPage struct {

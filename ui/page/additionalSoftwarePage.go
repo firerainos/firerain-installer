@@ -4,13 +4,13 @@ import (
 	"github.com/firerainos/firerain-installer/api"
 	"github.com/firerainos/firerain-installer/config"
 	"github.com/firerainos/firerain-installer/core/installer"
+	"github.com/firerainos/firerain-installer/styles"
+	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
-	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 	"log"
 	"strings"
-	"github.com/firerainos/firerain-installer/styles"
 )
 
 type AdditionalSoftwarePage struct {
@@ -49,7 +49,7 @@ func (a *AdditionalSoftwarePage) init() {
 	a.itemList = widgets.NewQListWidget(a)
 	a.packageList = widgets.NewQListView(a)
 	a.installList = widgets.NewQListView(a)
-	a.packageLine = widgets2.NewLineEdit(":/resources/package.svg",a)
+	a.packageLine = widgets2.NewLineEdit(":/resources/package.svg", a)
 
 	a.itemList.SetStyleSheet(styles.ItemList)
 	a.packageList.SetStyleSheet(styles.PackageList)
@@ -69,9 +69,9 @@ func (a *AdditionalSoftwarePage) init() {
 
 	installLayout := widgets.NewQVBoxLayout2(a)
 
-	installLayout.AddWidget(a.packageLine,0,core.Qt__AlignHCenter)
+	installLayout.AddWidget(a.packageLine, 0, core.Qt__AlignHCenter)
 	installLayout.AddSpacing(5)
-	installLayout.AddWidget(a.installList,1,core.Qt__AlignHCenter)
+	installLayout.AddWidget(a.installList, 1, core.Qt__AlignHCenter)
 
 	buttonLayout := widgets.NewQVBoxLayout2(a)
 	buttonLayout.SetSpacing(16)
@@ -96,7 +96,7 @@ func (a *AdditionalSoftwarePage) init() {
 	hboxLayout.AddWidget(a.itemList, 0, core.Qt__AlignLeft)
 	hboxLayout.AddWidget(a.packageList, 0, core.Qt__AlignLeft)
 	hboxLayout.AddLayout(buttonLayout, 0)
-	hboxLayout.AddLayout(installLayout,0)
+	hboxLayout.AddLayout(installLayout, 0)
 
 	vboxLayout.AddSpacing(30)
 	vboxLayout.AddWidget(welcomeLabel, 0, core.Qt__AlignCenter)
@@ -159,7 +159,7 @@ func (a *AdditionalSoftwarePage) LoadData() {
 		a.itemList.Clear()
 	}
 
-	widgets.NewQListWidgetItem2(config.Conf.DEApplication,a.itemList,0).SetTextAlignment(int(core.Qt__AlignCenter))
+	widgets.NewQListWidgetItem2(config.Conf.DEApplication, a.itemList, 0).SetTextAlignment(int(core.Qt__AlignCenter))
 
 	items, err := a.account.GetItem()
 	if err != nil {
@@ -180,7 +180,7 @@ func (a *AdditionalSoftwarePage) LoadData() {
 	}
 
 	for _, item := range items {
-		widgets.NewQListWidgetItem2(item.Title,a.itemList,0).SetTextAlignment(int(core.Qt__AlignCenter))
+		widgets.NewQListWidgetItem2(item.Title, a.itemList, 0).SetTextAlignment(int(core.Qt__AlignCenter))
 		model := gui.NewQStandardItemModel(a)
 		for _, pkg := range item.Packages {
 			item := gui.NewQStandardItem2(pkg.Name + "\n" + pkg.Description)
@@ -219,7 +219,7 @@ func (a *AdditionalSoftwarePage) rightButtonClicked(checked bool) {
 }
 
 func (a *AdditionalSoftwarePage) packageLineKeyEvent(event *gui.QKeyEvent) {
-	if event.Key() == int(core.Qt__Key_Enter) || event.Key() == int(core.Qt__Key_Return){
+	if event.Key() == int(core.Qt__Key_Enter) || event.Key() == int(core.Qt__Key_Return) {
 		pkg := a.packageLine.Text()
 		if pkg == "" {
 			return
@@ -232,7 +232,7 @@ func (a *AdditionalSoftwarePage) packageLineKeyEvent(event *gui.QKeyEvent) {
 			}
 			a.packageLine.SetText("")
 		} else {
-			widgets.NewQMessageBox2(widgets.QMessageBox__NoIcon,"提示",pkg+" 不存在",widgets.QMessageBox__Ok,a,0).Show()
+			widgets.NewQMessageBox2(widgets.QMessageBox__NoIcon, "提示", pkg+" 不存在", widgets.QMessageBox__Ok, a, 0).Show()
 		}
 	}
 }

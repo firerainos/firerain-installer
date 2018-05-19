@@ -9,7 +9,7 @@ var root *os.File
 
 func Chroot() error {
 	var err error
-	root,err=os.Open("/")
+	root, err = os.Open("/")
 	if err != nil {
 		return err
 	}
@@ -18,7 +18,7 @@ func Chroot() error {
 }
 
 func ExitChroot() error {
-	if err:=root.Chdir();err!=nil{
+	if err := root.Chdir(); err != nil {
 		return err
 	}
 	defer root.Close()

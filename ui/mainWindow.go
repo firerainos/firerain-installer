@@ -28,12 +28,11 @@ func (m *MainWindow) init() {
 	m.SetCentralWidget(frame)
 }
 
-
 func (m *MainWindow) initMenu() {
 	toolMenu := m.MenuBar().AddMenu2("&工具")
 
 	pmAction := toolMenu.AddAction("分区管理器")
-	terminalAction :=toolMenu.AddAction("终端")
+	terminalAction := toolMenu.AddAction("终端")
 
 	pmAction.ConnectTriggered(func(checked bool) {
 		exec.Command("/usr/bin/partitionmanager").Start()

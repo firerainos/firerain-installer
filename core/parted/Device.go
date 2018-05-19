@@ -33,7 +33,7 @@ func ScanDevice() ([]Device, error) {
 	devLists := strings.Split(string(out), "BYT;\n")
 
 	for _, dev := range devLists {
-		if dev == "" || strings.Contains(dev,"Error:") {
+		if dev == "" || strings.Contains(dev, "Error:") {
 			continue
 		}
 		items := strings.Split(dev, ";\n")

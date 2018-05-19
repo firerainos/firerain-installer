@@ -36,7 +36,7 @@ func (n *NetworkManager) SetWifiStatus(status bool) {
 func (n *NetworkManager) WifiStatus() bool {
 	var cmd *exec.Cmd
 	cmd = exec.Command("nmcli", "r", "wifi")
-	out,err:=cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return false
 	}
@@ -44,18 +44,16 @@ func (n *NetworkManager) WifiStatus() bool {
 	return string(out) == "enabled"
 }
 
-
 func (n *NetworkManager) CheckHasWifi() bool {
 	var cmd *exec.Cmd
 	cmd = exec.Command("nmcli", "-t", "dev")
-	out,err := cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return false
 	}
 
-	return strings.Contains(string(out),"wifi")
+	return strings.Contains(string(out), "wifi")
 }
-
 
 func (n *NetworkManager) WifiScan() {
 	tmpList := WifiList{}

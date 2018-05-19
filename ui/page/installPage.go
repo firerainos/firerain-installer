@@ -16,7 +16,7 @@ type InstallPage struct {
 func NewInstallPage(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *InstallPage {
 	frame := widgets.NewQFrame(parent, fo)
 
-	page := &InstallPage{QFrame:frame}
+	page := &InstallPage{QFrame: frame}
 	page.init()
 
 	return page
@@ -27,19 +27,19 @@ func (i *InstallPage) init() {
 
 	welcomeLabel := widgets.NewQLabel2("FireRainOS安装", i, 0)
 
-	i.tipsLabel = widgets.NewQLabel(i,0)
+	i.tipsLabel = widgets.NewQLabel(i, 0)
 	i.tipsLabel.SetFixedWidth(200)
 	i.tipsLabel.SetAlignment(core.Qt__AlignCenter)
 
 	i.messageText = widgets.NewQTextBrowser(i)
-	i.messageText.SetFixedSize2(800,500)
+	i.messageText.SetFixedSize2(800, 500)
 
 	vboxLayout.AddSpacing(80)
 	vboxLayout.AddWidget(welcomeLabel, 0, core.Qt__AlignCenter)
 	vboxLayout.AddStretch(1)
 	vboxLayout.AddWidget(i.tipsLabel, 0, core.Qt__AlignHCenter)
 	vboxLayout.AddStretch(1)
-	vboxLayout.AddWidget(i.messageText,0,core.Qt__AlignCenter)
+	vboxLayout.AddWidget(i.messageText, 0, core.Qt__AlignCenter)
 	vboxLayout.AddSpacing(50)
 
 	i.SetLayout(vboxLayout)

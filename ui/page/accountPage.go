@@ -1,8 +1,8 @@
 package page
 
 import (
-	_ "github.com/firerainos/firerain-installer/resources"
 	"github.com/firerainos/firerain-installer/config"
+	_ "github.com/firerainos/firerain-installer/resources"
 	widgets2 "github.com/firerainos/firerain-installer/ui/widgets"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
@@ -13,7 +13,7 @@ type AccountPage struct {
 
 	tipsLabel *widgets.QLabel
 
-	username,password *widgets2.LineEdit
+	username, password *widgets2.LineEdit
 }
 
 func NewAccountPage(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *AccountPage {
@@ -30,7 +30,7 @@ func (page *AccountPage) init() {
 
 	loginLabel := widgets.NewQLabel2("登陆", page, 0)
 
-	page.tipsLabel = widgets.NewQLabel(page,0)
+	page.tipsLabel = widgets.NewQLabel(page, 0)
 	page.tipsLabel.SetFixedWidth(200)
 	page.tipsLabel.SetAlignment(core.Qt__AlignCenter)
 
@@ -61,12 +61,11 @@ func (page *AccountPage) init() {
 	})
 }
 
-func  (page *AccountPage) SetTips(tips string) {
+func (page *AccountPage) SetTips(tips string) {
 	page.tipsLabel.SetText(tips)
 }
 
-func  (page *AccountPage) SetEnableLogin(enable bool) {
+func (page *AccountPage) SetEnableLogin(enable bool) {
 	page.username.SetVisible(enable)
 	page.password.SetVisible(enable)
 }
-

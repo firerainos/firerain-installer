@@ -28,7 +28,7 @@ func EnableServices() error {
 		case "firerain-fristboot":
 			err = EnableService("firerain-fristboot")
 		case "tlp":
-			if err = EnableService("tlp");err!=nil {
+			if err = EnableService("tlp"); err != nil {
 				break
 			}
 			err = EnableService("tlp-sleep")

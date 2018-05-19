@@ -1,23 +1,23 @@
 package installer
 
 import (
-	"os/exec"
+	"bufio"
+	"github.com/firerainos/firerain-installer/api"
 	"github.com/firerainos/firerain-installer/config"
 	"github.com/kr/pty"
-	"bufio"
+	"os/exec"
 	"strings"
-	"github.com/firerainos/firerain-installer/api"
 )
 
 func Pacstrap(out chan string) error {
-	return installPkg(out,"-r","/mnt","--cachedir=/mnt/var/cache/pacman/pkg")
+	return installPkg(out, "-r", "/mnt", "--cachedir=/mnt/var/cache/pacman/pkg")
 }
 
-func installPkg (out chan string,arg ...string) error {
-	cmdArg := append([]string{"-S","--noconfirm","--force"},arg...)
-	cmdArg = append(cmdArg,config.Conf.PkgList...)
-	cmd := exec.Command("pacman",arg...)
-	pacman,err := pty.Start(cmd)
+func installPkg(out chan string, arg ...string) error {
+	cmdArg := append([]string{"-S", "--noconfirm", "--force"}, arg...)
+	cmdArg = append(cmdArg, config.Conf.PkgList...)
+	cmd := exec.Command("pacman", arg...)
+	pacman, err := pty.Start(cmd)
 	if err != nil {
 		return err
 	}
@@ -38,19 +38,19 @@ func installPkg (out chan string,arg ...string) error {
 }
 
 func SyncDatabase() error {
-	cmd := exec.Command("pacman","-Syy")
+	cmd := exec.Command("pacman", "-Syy")
 	return cmd.Run()
 }
 
 func GetGroupPkgInfo(group string) []api.Package {
-	cmd := exec.Command("pacman","-Sg",group)
-	out,err:=cmd.CombinedOutput()
+	cmd := exec.Command("pacman", "-Sg", group)
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return nil
 	}
 
-	lines := strings.Split(string(out),"\n")
-	pkgs := make([]api.Package,0)
+	lines := strings.Split(string(out), "\n")
+	pkgs := make([]api.Package, 0)
 
 	pkgInfo := make(chan api.Package)
 	done := make(chan bool)
@@ -63,38 +63,38 @@ func GetGroupPkgInfo(group string) []api.Package {
 				done <- true
 				break
 			}
-			pkg := <- pkgInfo
+			pkg := <-pkgInfo
 			pkgs = append(pkgs, pkg)
 		}
 	}()
 
-	for _,line:= range lines {
-		if line=="" {
+	for _, line := range lines {
+		if line == "" {
 			continue
 		}
-		name := strings.Split(line," ")[1]
+		name := strings.Split(line, " ")[1]
 
 		go func() {
-			pkgInfo <- api.Package{Name:name,Description:GetPkgDescription(name)}
+			pkgInfo <- api.Package{Name: name, Description: GetPkgDescription(name)}
 		}()
 	}
 
-	<- done
+	<-done
 	return pkgs
 }
 
 func GetPkgDescription(pkgName string) string {
-	cmd := exec.Command("pacman","-Si",pkgName)
+	cmd := exec.Command("pacman", "-Si", pkgName)
 	cmd.Env = append(cmd.Env, "LANG=C")
-	out,err:=cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return ""
 	}
 
-	lines := strings.Split(string(out),"\n")
-	for _,line := range lines {
-		if strings.Contains(line,"Description") {
-			return strings.TrimSpace(strings.Split(line,":")[1])
+	lines := strings.Split(string(out), "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "Description") {
+			return strings.TrimSpace(strings.Split(line, ":")[1])
 		}
 	}
 
@@ -102,6 +102,6 @@ func GetPkgDescription(pkgName string) string {
 }
 
 func PkgIsExist(pkgName string) bool {
-	cmd := exec.Command("pacman","-Si",pkgName)
+	cmd := exec.Command("pacman", "-Si", pkgName)
 	return cmd.Run() == nil
 }

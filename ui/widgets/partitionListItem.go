@@ -2,12 +2,12 @@ package widgets
 
 import (
 	"github.com/firerainos/firerain-installer/core/parted"
+	"github.com/firerainos/firerain-installer/styles"
 	"github.com/therecipe/qt/core"
+	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"strconv"
 	"strings"
-	"github.com/therecipe/qt/gui"
-	"github.com/firerainos/firerain-installer/styles"
 )
 
 type PartitionListItem struct {
