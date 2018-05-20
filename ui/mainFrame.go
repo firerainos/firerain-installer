@@ -187,11 +187,7 @@ func (m *MainFrame) install() {
 	message := make(chan string)
 
 	go func() {
-		for {
-			msg := <-message
-			if msg == "" {
-				break
-			}
+		for msg:= range message{
 			if strings.HasPrefix(msg, "message:") {
 				m.installPage.SetTips(strings.Split(msg, ":")[1])
 			} else if strings.HasPrefix(msg, "action:") {
