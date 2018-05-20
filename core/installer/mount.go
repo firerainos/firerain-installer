@@ -7,7 +7,7 @@ import (
 )
 
 func MountMnt() error {
-	err := syscall.Mount(config.Conf.InstallDev, "/mnt", "btrfs", 0, "")
+	err := syscall.Mount(config.Conf.InstallDev, "/mnt", "btrfs", 0, "compress=lzo")
 	if err != nil {
 		return err
 	}
