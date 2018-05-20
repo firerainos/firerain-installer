@@ -14,16 +14,16 @@ func Pacstrap(out chan string) error {
 }
 
 func installPkg(out chan string, arg ...string) error {
-	cmdArg := append([]string{"-S", "--noconfirm", "--force"}, arg...)
+	cmdArg := append([]string{"-Sy", "--noconfirm"}, arg...)
 	cmdArg = append(cmdArg, config.Conf.PkgList...)
-	cmd := exec.Command("pacman", arg...)
+	cmd := exec.Command("pacman", cmdArg...)
 	pacman, err := pty.Start(cmd)
 	if err != nil {
 		return err
 	}
 	defer pacman.Close()
 
-	reader := bufio.NewReader(pacman)
+	reader := bufio.NewReaderSize(pacman,1024)
 
 	for {
 		line, _, err := reader.ReadLine()
@@ -34,7 +34,7 @@ func installPkg(out chan string, arg ...string) error {
 		out <- string(line)
 	}
 
-	return nil
+	return cmd.Wait()
 }
 
 func SyncDatabase() error {
