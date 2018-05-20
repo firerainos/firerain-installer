@@ -24,6 +24,10 @@ func Install(out chan string) error {
 	BindMnt()
 	defer UnBindMnt()
 
+	os.Remove("/mnt/boot/initramfs-linux-fallback.img")
+	os.Remove("/mnt/boot/initramfs-linux.img")
+	os.Remove("/mnt/boot/vmlinuz-linux")
+
 	out <- "message:正在安装"
 	if err := Pacstrap(out); err != nil {
 		return err
