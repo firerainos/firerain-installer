@@ -9,6 +9,7 @@ func EnableServices() error {
 	if err := Chroot(); err != nil {
 		return err
 	}
+	defer ExitChroot()
 
 	for _, pkg := range config.Conf.PkgList {
 		var err error
@@ -38,7 +39,7 @@ func EnableServices() error {
 		}
 	}
 
-	return ExitChroot()
+	return nil
 }
 
 func EnableService(service string) error {
