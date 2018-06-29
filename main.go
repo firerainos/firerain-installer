@@ -12,7 +12,7 @@ func main() {
 	config.InitConfig()
 
 	app := widgets.NewQApplication(len(os.Args), os.Args)
-	app.SetApplicationVersion("0.1.0")
+	app.SetApplicationVersion("0.2.0")
 	app.SetApplicationName("FireRain安装器")
 	app.SetWindowIcon(gui.NewQIcon5("/usr/share/icons/hicolor/192x192/apps/firerain-installer.svg"))
 
