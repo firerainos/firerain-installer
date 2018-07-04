@@ -1,6 +1,8 @@
 # firerain-installer
 > firerain installer
 
+# This repository has been moved to https://gitlab.com/firerainos/firerain-installer
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/firerainos/firerain-installer)](https://goreportcard.com/report/github.com/firerainos/firerain-installer)
 [![GoDoc](https://godoc.org/github.com/firerainos/firerain-installer?status.svg)](https://godoc.org/github.com/firerainos/firerain-installer)
 [![Sourcegraph](https://sourcegraph.com/github.com/firerainos/firerain-installer/-/badge.svg)](https://sourcegraph.com/github.com/firerainos/firerain-installer)
