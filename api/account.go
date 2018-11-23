@@ -28,7 +28,7 @@ func (a *Account) Login(username, password string) error {
 		"\"password\":" + "\"" + password + "\"" +
 		"}"
 
-	req, err := http.NewRequest("POST", "https://www.firerain.xyz/api/login", bytes.NewBuffer([]byte(data)))
+	req, err := http.NewRequest("POST", "https://firerain.me/api/login", bytes.NewBuffer([]byte(data)))
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (a *Account) Login(username, password string) error {
 }
 
 func (a *Account) GetItem() ([]Item, error) {
-	req, err := http.NewRequest("GET", "https://www.firerain.xyz/api/item", nil)
+	req, err := http.NewRequest("GET", "https://firerain.me/api/item", nil)
 	if err != nil {
 		return nil, err
 	}
